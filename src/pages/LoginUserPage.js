@@ -27,6 +27,10 @@ export default function LoginUserPage() {
         //Decode the JWT token
         const decodedToken = jwt_decode(token);
 
+        // Save userRole in localStorage
+        const userRole = decodedToken.isAdmin ? 'admin' : 'user';
+        localStorage.setItem('userRole', userRole);
+
         // Dispatch login action
         dispatch(login({ id: decodedToken._id, role: decodedToken.isAdmin ? 'admin' : 'user' }));
 

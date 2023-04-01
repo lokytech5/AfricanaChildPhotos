@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, setIsAuthenticated } from '../../redux/userSlice';
+import { logout, login, setIsAuthenticated } from '../../redux/userSlice';
 
 import {
+  Avatar,
   Box,
   Flex,
   Text,
@@ -20,11 +21,15 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  Grid,
   Button,
   VStack,
   HStack,
   LinkBox,
   LinkOverlay,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
   Link as ChakraLink,
 } from '@chakra-ui/react';
 
@@ -43,6 +48,13 @@ export default function NavigationMenu() {
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
 
+  useEffect(() => {
+    const userRole = localStorage.getItem('userRole');
+    if (userRole) {
+      dispatch(login({ role: userRole }));
+    }
+  }, [dispatch]);
+
   const handleLogout = () => {
     // Clear token from localStorage
     localStorage.removeItem('token');
@@ -51,6 +63,7 @@ export default function NavigationMenu() {
     dispatch(logout());
     dispatch(setIsAuthenticated(false));
     navigate('/', { replace: true });
+
   }
 
   const MenuItem = ({ to, children, onClick }) => (
@@ -70,7 +83,7 @@ export default function NavigationMenu() {
   );
 
   const MenuItems = () => (
-    <HStack spacing={8}>
+    <HStack spacing={8} w="100%">
       <MenuItem to="/">Home</MenuItem>
       <MenuItem to="/about">About Us</MenuItem>
       {!isAuthenticated && (
@@ -79,11 +92,24 @@ export default function NavigationMenu() {
           <MenuItem to="/register">Register</MenuItem>
         </>
       )}
-      <MenuItem to="/profile">Profile</MenuItem>
+
+      {isAuthenticated && userRole === 'user' && (
+        <MenuItem to="/profile">
+          <HStack spacing={2}>
+            <Text>Profile</Text>
+            <Avatar
+              size="sm"
+              name=''
+              src=""
+            />
+          </HStack>
+        </MenuItem>
+      )}
+
       {isAuthenticated && userRole === 'admin' && (
         <MenuItem to="/admin">Admin Panel</MenuItem>
       )}
-
+      <Spacer />
       {isAuthenticated && (
         <MenuItem onClick={handleLogout}>
           Logout
