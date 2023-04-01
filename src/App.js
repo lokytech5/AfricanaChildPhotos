@@ -7,6 +7,9 @@ import AboutUsPage from "./pages/AboutUsPage";
 import LoginUserPage from "./pages/LoginUserPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
 import HomePage from "./pages/HomePage";
+import ProfilePage from "./pages/ProfilePage";
+import AdminPage from "./pages/AdminPage";
+import ProtectedRoute from "./private/ProtectedRoute";
 function App() {
   return (
     <>
@@ -18,6 +21,12 @@ function App() {
             <Route path='/about' element={<AboutUsPage />} />
             <Route path='/login' element={<LoginUserPage />} />
             <Route path='/register' element={<RegisterUserPage />} />
+            <Route path='/profile' element={<ProfilePage />} />
+
+            <Route path="/admin" element={<ProtectedRoute roles={['admin']} />}>
+              <Route index element={<AdminPage />} />
+            </Route>
+
           </Routes>
         </Router>
       </ChakraProvider>

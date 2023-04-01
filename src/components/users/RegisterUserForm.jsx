@@ -22,6 +22,9 @@ export default function RegisterUserForm() {
     'linear(to-r, teal.600, teal.800)'
   );
 
+  const formBg = useColorModeValue('white', 'gray.700');
+  const inputBg = useColorModeValue('white', 'gray.800');
+
   return (
     <Flex
       alignItems="center"
@@ -40,7 +43,7 @@ export default function RegisterUserForm() {
         p={8}
         boxShadow="2xl"
         minWidth="320px"
-        bg="white"
+        bg={formBg}
       >
         <form>
           <FormControl id="email" mb={4}>

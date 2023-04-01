@@ -2,7 +2,9 @@ import React from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, setIsAuthenticated } from '../../redux/userSlice';
 
 import {
   Box,
@@ -20,6 +22,9 @@ import {
   DrawerCloseButton,
   Button,
   VStack,
+  HStack,
+  LinkBox,
+  LinkOverlay,
   Link as ChakraLink,
 } from '@chakra-ui/react';
 
@@ -29,25 +34,62 @@ export default function NavigationMenu() {
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const [isOpen, setIsOpen] = React.useState(false);
   const btnRef = React.useRef();
+  const navigate = useNavigate();
+
+  const userRole = useSelector((state) => state.user.role);
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+  const dispatch = useDispatch();
 
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
 
+  const handleLogout = () => {
+    // Clear token from localStorage
+    localStorage.removeItem('token');
+
+    // Dispatch logout action
+    dispatch(logout());
+    dispatch(setIsAuthenticated(false));
+    navigate('/', { replace: true });
+  }
+
+  const MenuItem = ({ to, children, onClick }) => (
+    <LinkBox
+      as="li"
+      _hover={{ textDecoration: 'underline', color: 'blue.500' }}
+      onClick={onClick}
+    >
+      {to ? (
+        <ChakraLink as={Link} to={to}>
+          {children}
+        </ChakraLink>
+      ) : (
+        <Text>{children}</Text>
+      )}
+    </LinkBox>
+  );
+
   const MenuItems = () => (
-    <VStack align="start" spacing={4}>
-      <ChakraLink as={Link} to="/">
-        Home
-      </ChakraLink>
-      <ChakraLink as={Link} to="/about">
-        About Us
-      </ChakraLink>
-      <ChakraLink as={Link} to="/login">
-        Login
-      </ChakraLink>
-      <ChakraLink as={Link} to="/register">
-        Register
-      </ChakraLink>
-    </VStack>
+    <HStack spacing={8}>
+      <MenuItem to="/">Home</MenuItem>
+      <MenuItem to="/about">About Us</MenuItem>
+      {!isAuthenticated && (
+        <>
+          <MenuItem to="/login">Login</MenuItem>
+          <MenuItem to="/register">Register</MenuItem>
+        </>
+      )}
+      <MenuItem to="/profile">Profile</MenuItem>
+      {isAuthenticated && userRole === 'admin' && (
+        <MenuItem to="/admin">Admin Panel</MenuItem>
+      )}
+
+      {isAuthenticated && (
+        <MenuItem onClick={handleLogout}>
+          Logout
+        </MenuItem>
+      )}
+    </HStack>
   );
 
   return (

@@ -1,5 +1,10 @@
 import React from 'react'
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod'
+
+
 
 import {
   Box,
@@ -12,15 +17,42 @@ import {
   Link,
   useMediaQuery,
   useColorModeValue,
+  FormErrorMessage
 } from '@chakra-ui/react';
 
-export default function LoginUserForm() {
+//*Handling validation errors for each input type
+
+const formValidationSchema = z.object({
+  username: z.string().nonempty('Name is required'),
+  password: z.string().nonempty('Password is required'),
+});
+
+export default function LoginUserForm(props) {
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(formValidationSchema)
+  });
+
+  const navigate = useNavigate();
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const bgGradient = useColorModeValue(
     'linear(to-r, teal.300, teal.500)',
     'linear(to-r, teal.600, teal.800)'
   );
+
+  const formBg = useColorModeValue('white', 'gray.700');
+
+  const handleFormSubmit = (data) => {
+    const loginData = {
+      username: data.username,
+      password: data.password,
+    };
+
+    props.onAddLogin(loginData)
+    navigate('/')
+
+  }
 
   return (
     <Flex
@@ -40,16 +72,29 @@ export default function LoginUserForm() {
         p={8}
         boxShadow="2xl"
         minWidth="320px"
-        bg="white"
+        bg={formBg}
       >
-        <form>
-          <FormControl id="email" mb={4}>
-            <FormLabel>Email</FormLabel>
-            <Input type="email" placeholder="Enter your email" />
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <FormControl id="usename" mb={4} isInvalid={errors.username}>
+            <FormLabel>UserName</FormLabel>
+            <Input
+              {...register('username')}
+              type="text"
+              placeholder="Enter your userName" />
+            <FormErrorMessage>
+              {errors.username?.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="password" mb={4}>
+
+          <FormControl id="password" mb={4} isInvalid={errors.password}>
             <FormLabel>Password</FormLabel>
-            <Input type="password" placeholder="Enter your password" />
+            <Input
+              {...register('password')}
+              type="password"
+              placeholder="Enter your password" />
+            <FormErrorMessage>
+              {errors.password?.message}
+            </FormErrorMessage>
           </FormControl>
           <Button type="submit" colorScheme="teal" mb={4} width="100%">
             Login
