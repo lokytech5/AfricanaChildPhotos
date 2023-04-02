@@ -5,8 +5,8 @@ import { useToast, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
-import { useDispatch } from 'react-redux';
-import { login } from '../redux/userSlice'
+import { useSelector, useDispatch } from 'react-redux';
+import { login, setIsAuthenticated } from '../redux/userSlice'
 
 export default function LoginUserPage() {
 
@@ -33,6 +33,9 @@ export default function LoginUserPage() {
 
         // Dispatch login action
         dispatch(login({ id: decodedToken._id, role: decodedToken.isAdmin ? 'admin' : 'user' }));
+
+        // Dispatch setIsAuthenticated action
+        dispatch(setIsAuthenticated(true));
 
         // Show success toast
         toast({

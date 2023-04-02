@@ -3,6 +3,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import NavigationMenu from "./components/shared/NavigationMenu";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { loadUser } from './redux/userSlice';
+
+
 import AboutUsPage from "./pages/AboutUsPage";
 import LoginUserPage from "./pages/LoginUserPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
@@ -10,6 +15,9 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from "./private/ProtectedRoute";
+import ServiceRequestListPage from "./pages/ServiceRequestListPage";
+
+
 function App() {
   return (
     <>
@@ -25,6 +33,7 @@ function App() {
 
             <Route path="/admin" element={<ProtectedRoute roles={['admin']} />}>
               <Route index element={<AdminPage />} />
+              <Route element={<ServiceRequestListPage />} />
             </Route>
 
           </Routes>
