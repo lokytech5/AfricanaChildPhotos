@@ -13,9 +13,9 @@ import LoginUserPage from "./pages/LoginUserPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
+import ServiceBookingPage from "./pages/ServiceBookingPage";
 import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from "./private/ProtectedRoute";
-import ServiceRequestListPage from "./pages/ServiceRequestListPage";
 
 
 function App() {
@@ -30,10 +30,10 @@ function App() {
             <Route path='/login' element={<LoginUserPage />} />
             <Route path='/register' element={<RegisterUserPage />} />
             <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/service' element={<ServiceBookingPage />} />
 
             <Route path="/admin" element={<ProtectedRoute roles={['admin']} />}>
               <Route index element={<AdminPage />} />
-              <Route element={<ServiceRequestListPage />} />
             </Route>
 
           </Routes>

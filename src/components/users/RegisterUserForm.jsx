@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom';
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 
 import {
   Box,
@@ -12,9 +15,24 @@ import {
   Link,
   useMediaQuery,
   useColorModeValue,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 
-export default function RegisterUserForm() {
+//*Handling validation errors for each input type
+const formValidationSchema = z.object({
+  username: z.string().nonempty('Name is required').min(5, 'Username must be at least 5 characters long'),
+  password: z.string().nonempty('Password is required').min(5, 'Password must be at least 5 characters long'),
+  email: z.string().nonempty('Email is required'),
+  confirmPassword: z.string().nonempty('Confirm Password is required'),
+})
+
+export default function RegisterUserForm(props) {
+
+  const { register,
+    handleSubmit,
+    formState: { errors }, getValues, setError, } = useForm({
+      resolver: zodResolver(formValidationSchema)
+    });
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const bgGradient = useColorModeValue(
@@ -24,6 +42,32 @@ export default function RegisterUserForm() {
 
   const formBg = useColorModeValue('white', 'gray.700');
   const inputBg = useColorModeValue('white', 'gray.800');
+
+  //*Validating Password
+  const validatePassword = () => {
+    if (getValues('password') !== getValues('confirmPassword')) {
+      setError('confirmPassword', {
+        type: 'manual',
+        message: 'Passwords do not match',
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const handleFormSubmit = (data) => {
+    if (!validatePassword()) {
+      return;
+    }
+
+    const registerUser = {
+      username: data.username,
+      password: data.password,
+      email: data.email,
+    }
+
+    props.onAddRegisterUser(registerUser);
+  }
 
   return (
     <Flex
@@ -45,22 +89,54 @@ export default function RegisterUserForm() {
         minWidth="320px"
         bg={formBg}
       >
-        <form>
-          <FormControl id="email" mb={4}>
+        <form onSubmit={handleSubmit(handleFormSubmit)}>
+          <FormControl id="username" mb={4} isInvalid={errors.username}>
+            <FormLabel>Username</FormLabel>
+            <Input
+              {...register('username')}
+              type="text"
+              placeholder="Enter your userName" />
+            <FormErrorMessage>
+              {errors.username?.message}
+            </FormErrorMessage>
+          </FormControl>
+
+
+          <FormControl id="email" mb={4} isInvalid={errors.email}>
             <FormLabel>Email</FormLabel>
-            <Input type="email" placeholder="Enter your email" />
+            <Input
+              {...register('email')}
+              type="email"
+              placeholder="Enter your email" />
+            <FormErrorMessage>
+              {errors.email?.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="password" mb={4}>
+
+          <FormControl id="password" mb={4} isInvalid={errors.password}>
             <FormLabel>Password</FormLabel>
-            <Input type="password" placeholder="Enter your password" />
+            <Input
+              {...register('password')}
+              type="password"
+              placeholder="Enter your password" />
+            <FormErrorMessage>
+              {errors.password?.message}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl id="confirm-password" mb={4}>
+
+          <FormControl id="confirm-password" mb={4} isInvalid={errors.confirmPassword}>
             <FormLabel>Confirm Password</FormLabel>
             <Input
+              {...register('confirmPassword')}
               type="password"
               placeholder="Confirm your password"
             />
+            <FormErrorMessage>
+              {errors.confirmPassword?.message}
+            </FormErrorMessage>
           </FormControl>
+
+
           <Button type="submit" colorScheme="teal" mb={4} width="100%">
             Register
           </Button>

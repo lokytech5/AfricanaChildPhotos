@@ -95,6 +95,7 @@ export default function NavigationMenu() {
         <VStack spacing={4} alignItems="start" as="ul" listStyleType="none">
           <MenuItem to="/">Home</MenuItem>
           <MenuItem to="/about">About Us</MenuItem>
+          <MenuItem to="/service">Booking</MenuItem>
           {!isAuthenticated && (
             <>
               <MenuItem to="/login">Login</MenuItem>
@@ -121,6 +122,7 @@ export default function NavigationMenu() {
       ) : (<HStack spacing={4} alignItems="center" as="ul" listStyleType="none">
         <MenuItem to="/">Home</MenuItem>
         <MenuItem to="/about">About Us</MenuItem>
+        <MenuItem to="/service">Booking</MenuItem>
         {!isAuthenticated && (
           <>
             <MenuItem to="/login">Login</MenuItem>

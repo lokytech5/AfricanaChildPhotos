@@ -1,26 +1,28 @@
 import React from 'react'
 import ServiceRequestList from './ServiceRequestList'
 import UserRequestList from './UserRequestList';
+
+import { FiUsers, FiList } from 'react-icons/fi';
 import {
-    Container,
     Box,
-    Heading,
-    Tabs,
-    TabList,
-    TabPanels,
+    Container,
     Flex,
-    VStack,
+    Heading,
     Tab,
+    TabList,
     TabPanel,
+    TabPanels,
+    Tabs,
+    VStack,
     useColorModeValue,
 } from '@chakra-ui/react';
 
-export default function AdminDashboard() {
 
+export default function AdminDashboard() {
     const bgColor = useColorModeValue('gray.50', 'gray.700');
     const textColor = useColorModeValue('gray.800', 'gray.200');
-    return (
 
+    return (
         <Container maxW="container.xl">
             <Box
                 my={10}
@@ -37,15 +39,29 @@ export default function AdminDashboard() {
                     </Heading>
                     <Tabs isFitted variant="enclosed" colorScheme="blue">
                         <TabList mb="1em" borderBottom="1px solid" borderColor="blue.200">
-                            <Tab _selected={{ color: 'white', bg: 'blue.600' }}>Service Requests</Tab>
-                            <Tab _selected={{ color: 'white', bg: 'blue.600' }}>Users</Tab>
+                            <Tab _selected={{ color: 'white', bg: 'blue.600' }}>
+                                <FiList />
+                                <Box as="span" ml="2">
+                                    Service Requests
+                                </Box>
+                            </Tab>
+                            <Tab _selected={{ color: 'white', bg: 'blue.600' }}>
+                                <FiUsers />
+                                <Box as="span" ml="2">
+                                    Users
+                                </Box>
+                            </Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
-                                <ServiceRequestList />
+                                <Box overflowX="auto">
+                                    <ServiceRequestList />
+                                </Box>
                             </TabPanel>
                             <TabPanel>
-                                <UserRequestList />
+                                <Box overflowX="auto">
+                                    <UserRequestList />
+                                </Box>
                             </TabPanel>
                         </TabPanels>
                     </Tabs>
@@ -54,3 +70,6 @@ export default function AdminDashboard() {
         </Container>
     );
 }
+
+
+
