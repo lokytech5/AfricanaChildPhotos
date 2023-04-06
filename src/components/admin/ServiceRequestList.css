@@ -1,9 +1,0 @@
-.chakra-select__option {
-  background-color: white;
-  color: black;
-}
-
-.chakra-select__option[selected] {
-  background-color: #EDF2F7;
-  color: black;
-}

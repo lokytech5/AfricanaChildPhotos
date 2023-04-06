@@ -36,6 +36,15 @@ const formValidationSchema = z.object({
     message: z.string().optional(),
 });
 
+const getTodayDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+};
+
+
 
 export default function ServiceBooking(props) {
 
@@ -125,13 +134,19 @@ export default function ServiceBooking(props) {
                             <FormControl id="date" mb={4} isInvalid={errors.date}>
                                 <FormLabel>Date</FormLabel>
                                 <Input {...register('date')}
-                                    type="date" placeholder="Select date" />
+                                    type="date"
+                                    placeholder="Select date"
+                                    min={getTodayDate()} />
                                 <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
                             </FormControl>
 
                             <FormControl id="time" mb={4} isInvalid={errors.time}>
                                 <FormLabel>Time</FormLabel>
-                                <Input {...register('time')} type="time" placeholder="Select time" />
+                                <Input {...register('time')}
+                                    type="time"
+                                    min="06:00"
+                                    max="18:00"
+                                    placeholder="Select time" />
                                 <FormErrorMessage>{errors.time?.message}</FormErrorMessage>
                             </FormControl>
                         </Grid>

@@ -21,9 +21,11 @@ export default function ServiceBookingPage() {
   const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [hasBooking, setHasBooking] = useState(false);
+
   const closeModal = () => {
     setIsModalOpen(false);
-    navigate('/');
+    navigate('/profile');
   }
 
 
@@ -40,6 +42,7 @@ export default function ServiceBookingPage() {
         console.log('Booking Successfully:', response.data);
         setFormData(serviceData);
         setIsModalOpen(true);
+        setHasBooking(true);
       } else {
         console.error('Error while sending form data to the backend:', response.status, response.statusText);
         // Handle error, e.g., show an error message
@@ -65,7 +68,6 @@ export default function ServiceBookingPage() {
   }
   return (
     <>
-
       <ServiceBooking
         onAddService={addServiceBookingHandler} />
 

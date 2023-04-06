@@ -19,6 +19,7 @@ import ProtectedRoute from "./private/ProtectedRoute";
 
 
 function App() {
+
   return (
     <>
       <ChakraProvider>

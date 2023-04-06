@@ -6,6 +6,7 @@ const initialState = {
     id: null,
     role: null,
     name: '',
+    username: localStorage.getItem('username'),
 };
 
 export const loadUser = createAsyncThunk('user/loadUser', async () => {
@@ -26,6 +27,7 @@ const userSlice = createSlice({
             state.role = action.payload.role;
             state.isAuthenticated = true;
             state.token = action.payload.token;
+            state.username = action.payload.username;
         },
         logout: (state) => {
             state.id = null;
@@ -42,6 +44,7 @@ const userSlice = createSlice({
         builder.addCase(loadUser.fulfilled, (state, action) => {
             if (action.payload) {
                 state.isAuthenticated = true;
+                state.id = action.payload.id;
                 state.role = action.payload.role;
                 state.name = action.payload.name;
             } else {

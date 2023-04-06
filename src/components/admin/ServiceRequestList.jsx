@@ -37,7 +37,7 @@ export default function ServiceRequestList() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [serviceRequestIdToDelete, setServiceRequestIdToDelete] = useState(null);
 
-  const fontSize = useBreakpointValue({ base: 'sm', md: 'md' });
+  const fontSize = useBreakpointValue({ base: 'sm', md: 'sm' });
   const padding = useBreakpointValue({ base: 1, md: 4 });
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const toast = useToast();
@@ -81,7 +81,7 @@ export default function ServiceRequestList() {
   const token = localStorage.getItem('token');
   const deleteServiceRequestHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/services/${id}`, {
+      await axios.delete(`http://localhost:5000/api/services/admin/${id}`, {
         headers: {
           'x-auth-token': token,
         },

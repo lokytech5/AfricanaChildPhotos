@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import LoginUserForm from '../components/users/LoginUserForm'
-
+import { useNavigate } from 'react-router-dom';
 import { useToast, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
@@ -13,6 +13,7 @@ export default function LoginUserPage() {
   const [formData, setFormData] = useState(null);
   const toast = useToast();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addLoginHandler = async (loginData) => {
     try {
@@ -22,8 +23,14 @@ export default function LoginUserPage() {
         console.log("Token stored in local storage:", localStorage.getItem('token'));
         setFormData(loginData);
         const token = response.data.token;
+        const userId = response.data.userId;
+        const username = response.data.username;
         console.log('Setting token in local storage:', token);
         localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('username', username);
+
+
         //Decode the JWT token
         const decodedToken = jwt_decode(token);
 
@@ -32,7 +39,11 @@ export default function LoginUserPage() {
         localStorage.setItem('userRole', userRole);
 
         // Dispatch login action
-        dispatch(login({ id: decodedToken._id, role: decodedToken.isAdmin ? 'admin' : 'user' }));
+        dispatch(login({
+          id: decodedToken._id,
+          role: decodedToken.isAdmin ? 'admin' : 'user',
+          username: response.data.username
+        }));
 
         // Dispatch setIsAuthenticated action
         dispatch(setIsAuthenticated(true));
@@ -45,6 +56,8 @@ export default function LoginUserPage() {
           duration: 5000,
           isClosable: true,
         });
+
+        navigate('/')
       }
 
     } catch (error) {

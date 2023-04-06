@@ -44,17 +44,22 @@ export default function NavigationMenu() {
   const navigate = useNavigate();
 
   const userRole = useSelector((state) => state.user.role);
+  const user = useSelector((state) => state.user.user);
+  const username = useSelector((state) => state.user.username);
+  console.log('User object:', user);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
-  const loading = useSelector((state) => state.user.loading);
+  const loading = useSelector((state) => state.user.isloading);
   const dispatch = useDispatch();
+
+
 
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
 
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
-    if (userRole) {
-      dispatch(login({ role: userRole }));
+    if (userRole && username) {
+      dispatch(login({ role: userRole, username: username }));
     }
   }, [dispatch]);
 
@@ -105,13 +110,19 @@ export default function NavigationMenu() {
           {isAuthenticated && userRole === 'user' && (
             <MenuItem to="/profile">
               <Flex alignItems="center">
-                <Avatar size="sm" name="" src="" />
-                <Text ml={2}>Profile</Text>
+                <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+                <Text ml={2}>{username ? `Welcome` : ''}</Text>
               </Flex>
             </MenuItem>
           )}
           {isAuthenticated && userRole === 'admin' && (
-            <MenuItem to="/admin">Admin Panel</MenuItem>
+            <MenuItem to="/admin">
+              <Flex alignItems="center">
+                <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+                <Text ml={2}>{username ? `Welcome Admin` : ''}</Text>
+              </Flex>
+
+            </MenuItem>
           )}
           {isAuthenticated && (
             <MenuItem onClick={handleLogout}>
@@ -133,15 +144,20 @@ export default function NavigationMenu() {
         {isAuthenticated && userRole === 'user' && (
           <MenuItem to="/profile">
             <Flex alignItems="center">
-              <Avatar size="sm" name="" src="" />
-              <Text ml={2}>Profile</Text>
+              <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+              <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Welcome` : ''}</Text>
             </Flex>
 
           </MenuItem>
         )}
 
         {isAuthenticated && userRole === 'admin' && (
-          <MenuItem to="/admin">Admin Panel</MenuItem>
+          <MenuItem to="/admin">
+            <Flex alignItems="center">
+              <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+              <Text ml={2}>{username ? `Welcome Admin` : ''}</Text>
+            </Flex>
+          </MenuItem>
         )}
 
         <Spacer />
