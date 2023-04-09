@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import UserBookingDetails from './UserBookingDetails';
 import ProfileManagement from './ProfileManagement';
-
+import AvatarUpload from './AvatarUpload';
+import Footer from '../shared/Footer';
 import {
     Box,
     Flex,
@@ -33,23 +34,11 @@ export default function UserProfile() {
                     </Heading>
                     <Tabs variant="enclosed" colorScheme="blue">
                         <TabList mb="1em">
+                            <Tab>Booking Details</Tab>
                             <Tab>Profile Management</Tab>
-                            <Tab>User Booking Details</Tab>
+                            <Tab>Upload Avatar</Tab>
                         </TabList>
                         <TabPanels>
-                            <TabPanel>
-                                <VStack
-                                    bg={bg}
-                                    p={6}
-                                    borderRadius="lg"
-                                    borderWidth={1}
-                                    borderColor={borderColor}
-                                    boxShadow="md"
-                                    spacing={10}
-                                >
-                                    <ProfileManagement />
-                                </VStack>
-                            </TabPanel>
                             <TabPanel>
                                 <VStack
                                     bg={bg}
@@ -63,11 +52,38 @@ export default function UserProfile() {
                                     <UserBookingDetails />
                                 </VStack>
                             </TabPanel>
+                            <TabPanel>
+                                <VStack
+                                    bg={bg}
+                                    p={6}
+                                    borderRadius="lg"
+                                    borderWidth={1}
+                                    borderColor={borderColor}
+                                    boxShadow="md"
+                                    spacing={10}
+                                >
+                                    <ProfileManagement />
+                                </VStack>
+                            </TabPanel>
+
+                            <TabPanel>
+                                <VStack
+                                    bg={bg}
+                                    p={6}
+                                    borderRadius="lg"
+                                    borderWidth={1}
+                                    borderColor={borderColor}
+                                    boxShadow="md"
+                                    spacing={10}
+                                >
+                                    <AvatarUpload />
+                                </VStack>
+                            </TabPanel>
                         </TabPanels>
                     </Tabs>
                 </VStack>
             </Container>
-
+            <Footer />
         </>
     );
 };

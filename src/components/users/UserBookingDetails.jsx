@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Box,
   FormControl,
@@ -9,29 +12,102 @@ import {
   Stack,
   Button,
   useToast,
+  Heading,
   Text,
   Table,
   Tbody,
   Thead,
+  CircularProgress,
+  Modal,
+  ModalOverlay,
+  ModalBody,
+  ModalFooter,
+  ModalContent,
+  ModalCloseButton,
+  ModalHeader,
+  Grid,
+  FormErrorMessage,
   Tr,
   Td,
   Th,
+  Select,
 } from "@chakra-ui/react";
+
+//*Handling validation errors for each input type
+const formValidationSchema = z.object({
+  name: z.string().nonempty('Name is required'),
+  email: z.string().nonempty('Email address'),
+  phoneNumber: z.string().nonempty('Phone number is required'),
+  serviceType: z.enum(['wedding', 'portrait', 'event']),
+  date: z.string().nonempty('Date is required'),
+  time: z.string().nonempty('Time is required'),
+  address: z.string().nonempty('Address is required'),
+  message: z.string().optional(),
+});
 
 
 export default function UserBookingDetails() {
+  //*UserBooking, Delete and Update state from the server
   const [userBooking, setUserBooking] = useState([]);
+  const [userRequestIdToDelete, setUserRequestIdToDelete] = useState(null);
+  const [bookingToUpdate, setBookingToUpdate] = useState(null);
+  const [updatedBooking, setUpdatedBooking] = useState(null);
+
+  //*Loading State 
   const [isLoading, setIsLoading] = useState(true);
+
+  //*Modal State for delete and update
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+
+  //*Getting Token from localStorage and Getting userId from Redux store
   const token = localStorage.getItem('token');
   const reduxUserId = useSelector((state) => state.user.id);
   const userId = reduxUserId || localStorage.getItem("userId");
 
-  console.log("userId:", userId); // Debugging line
-
+  //*Getting the current id from redux and setting it to localStorage
   if (reduxUserId) {
     localStorage.setItem("userId", reduxUserId);
   }
+  console.log("userId:", userId); // Debugging line
 
+  //*Toast from chakraUI
+  const toast = useToast()
+
+  //*Initializing useForm here
+  const { register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset } = useForm({
+      resolver: zodResolver(formValidationSchema),
+      defaultValues: updatedBooking,
+    });
+
+  //*Function for opening update Modal state.
+  const openUpdateModal = (booking) => {
+    setBookingToUpdate(booking);
+    setUpdatedBooking({ ...booking });
+    setIsUpdateModalOpen(true);
+  };
+  //*function for Closing Update Modal
+  const closeUpdateModal = () => {
+    setIsUpdateModalOpen(false);
+  };
+
+
+  //*Function for Openning Modal when delete button is click on table
+  const openDeleteModal = (id) => {
+    setUserRequestIdToDelete(id);
+    setIsDeleteModalOpen(true);
+
+  };
+  //*Function for closing modal when delete button is click on table
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
+
+  //*Fetching UserBooking by userId
   useEffect(() => {
     const fetchUserBookingData = async (userId) => {
       try {
@@ -60,50 +136,329 @@ export default function UserBookingDetails() {
     return <div>Loading...</div>;
   }
 
+  //*Updating / Modfiying Userbooking by id.
+  const updateBookingHandler = handleSubmit(async (formData) => {
+    try {
+
+      const response = await axios.put(`http://localhost:5000/api/users/booking/${bookingToUpdate._id}`, updatedBooking, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+
+      if (response.status === 200 || response.status === 201) {
+        setUserBooking(
+          userBooking.map((booking) =>
+            booking._id === bookingToUpdate._id ? updatedBooking : booking
+          )
+        );
+        closeUpdateModal();
+
+        toast({
+          title: 'Success!',
+          description: 'Booking updated successfully.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+
+    } catch (error) {
+      console.error('Error updating booking:', error);
+      toast({
+        title: 'Error!',
+        description: 'Error updating booking.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  });
+
+
+
+  //*delete Userbooking by id
+  const deleteUserBookingDataHandler = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/users/booking/${id}`, {
+        headers: {
+          'x-auth-token': token,
+        },
+      });
+
+      setUserBooking(userBooking.filter(request => request._id !== id));
+      closeDeleteModal();
+      // setUserBooking((prevState) => !prevState)
+      // Show success toast
+      toast({
+        title: 'Success!',
+        description: 'Booking deleted successfully.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+
+    } catch (error) {
+      console.error('Error deleting service request:', error);
+      // Show error toast
+      toast({
+        title: 'Error!',
+        description: 'Error deleting Booking.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }
+
   return (
-    <Box>
-      <Table variant="simple" size="sm">
-        <Thead>
-          <Tr>
-            <Th>Name</Th>
-            <Th>Email</Th>
-            <Th>Phone</Th>
-            <Th>Service Type</Th>
-            <Th>Date</Th>
-            <Th>Time</Th>
-            <Th>Address</Th>
-            <Th>Message</Th>
-            <Th>Status</Th>
-            <Th>Actions</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {userBooking &&
-            userBooking.map((bookingItem) => (
-              <Tr key={bookingItem._id}>
-                <Td>{bookingItem.name}</Td>
-                <Td>{bookingItem.email}</Td>
-                <Td>{bookingItem.phoneNumber}</Td>
-                <Td>{bookingItem.serviceType}</Td>
-                <Td>{bookingItem.date}</Td>
-                <Td>{bookingItem.time}</Td>
-                <Td>{bookingItem.address}</Td>
-                <Td>{bookingItem.message}</Td>
-                <Td> {bookingItem.status}</Td>
-                <Td>
-                  {/* Status and other elements can be added here */}
-                </Td>
-                <Td>
-                  <Box display="flex" justifyContent="center">
-                    <Button size="sm" colorScheme="red">
-                      Delete Booking
-                    </Button>
-                  </Box>
-                </Td>
+    <>
+      <Box mb={6}>
+        <Heading as="h2" size="xl" textAlign="center" mb={4}>
+          Booking
+        </Heading>
+      </Box>
+
+      <Box>
+        {isLoading ? (
+          <Box textAlign="center">
+            <CircularProgress isIndeterminate color="blue.300" />
+          </Box>
+        ) : (
+          <Table variant="simple" size="sm">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Phone</Th>
+                <Th>Service Type</Th>
+                <Th>Date</Th>
+                <Th>Time</Th>
+                <Th>Address</Th>
+                <Th>Message</Th>
+                <Th>Status</Th>
+                <Th>Actions</Th>
               </Tr>
-            ))}
-        </Tbody>
-      </Table>
-    </Box>
+            </Thead>
+            <Tbody>
+              {userBooking && userBooking.length === 0 ? (
+                <Tr>
+                  {/* Condition rendering if no booking have been made */}
+                  <Td colSpan="10">
+                    <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                      No bookings have been made yet.
+                    </Text>
+                  </Td>
+                </Tr>
+              ) : (
+                userBooking.map((bookingItem) => (
+                  <Tr key={bookingItem._id}
+                    _hover={{ bg: 'black', cursor: 'pointer' }}>
+                    <Td>{bookingItem.name}</Td>
+                    <Td>{bookingItem.email}</Td>
+                    <Td>{bookingItem.phoneNumber}</Td>
+                    <Td>{bookingItem.serviceType}</Td>
+                    <Td>{bookingItem.date}</Td>
+                    <Td>{bookingItem.time}</Td>
+                    <Td>{bookingItem.address}</Td>
+                    <Td>{bookingItem.message}</Td>
+                    <Td> {bookingItem.status}</Td>
+                    <Td>
+                      <Box display="block" textAlign="center">
+                        <Button
+                          size="sm"
+                          colorScheme="blue"
+                          mb={2}
+                          onClick={() => openUpdateModal(bookingItem)}
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          size="sm"
+                          colorScheme="red"
+                          onClick={() => openDeleteModal(bookingItem._id)}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
+                    </Td>
+                  </Tr>
+                ))
+              )}
+            </Tbody>
+          </Table>
+        )}
+      </Box>
+
+      {/* Delete modal */}
+      <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Delete Service Request</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Are you sure you want to delete this users?
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" mr={3} onClick={() => deleteUserBookingDataHandler(userRequestIdToDelete)}>
+              Yes, Delete
+            </Button>
+            <Button variant="ghost" onClick={closeDeleteModal}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
+      {/* Update modal */}
+      <Modal isOpen={isUpdateModalOpen} onClose={closeUpdateModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Update Booking</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {bookingToUpdate && (
+              <form onSubmit={updateBookingHandler}>
+                <Stack spacing={4}>
+                  <FormControl id="name" isInvalid={errors.name}>
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      {...register('name')}
+                      type="text"
+                      placeholder={updatedBooking.name}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, name: e.target.value })
+                      }
+                    />
+                    <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
+                  </FormControl>
+
+                  <FormControl id="email" isInvalid={errors.email}>
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      {...register('email')}
+                      type="email"
+                      placeholder={updatedBooking.email}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, email: e.target.value })
+                      }
+                    />
+                    <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+                  </FormControl>
+
+                  {/* Phone NUmber */}
+                  <FormControl id="phoneNumber" isInvalid={errors.phoneNumber}>
+                    <FormLabel>PhoneNumber</FormLabel>
+                    <Input
+                      {...register('phoneNumber')}
+                      type="text"
+                      placeholder={updatedBooking.phoneNumber}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, phoneNumber: e.target.value })
+                      }
+                    />
+                    <FormErrorMessage>{errors.phoneNumber?.message}</FormErrorMessage>
+                  </FormControl>
+
+                  {/* ServiceType */}
+                  <FormControl id="serviceType" isInvalid={errors.serviceType}>
+                    <FormLabel>Service Type</FormLabel>
+                    <Select placeholder="Select service type"
+                      {...register('serviceType')}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, serviceType: e.target.value })
+                      }
+                    >
+                      <option value={updatedBooking.serviceType}>Portrait</option>
+                      <option value={updatedBooking.serviceType}>Event</option>
+                      <option value={updatedBooking.serviceType}>Wedding</option>
+                    </Select>
+                    <FormErrorMessage>{errors.serviceType?.message}</FormErrorMessage>
+                  </FormControl>
+
+                  <Grid templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }} gap={4}>
+                    {/* Date */}
+                    <FormControl id="date" isInvalid={errors.date}>
+                      <FormLabel>Date</FormLabel>
+                      <Input
+                        {...register('date')}
+                        type="date"
+
+                        placeholder={updatedBooking.date}
+                        onChange={(e) =>
+                          setUpdatedBooking({ ...updatedBooking, date: e.target.value })
+                        }
+                      />
+                      <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
+                    </FormControl>
+
+                    {/* Time */}
+                    <FormControl id="time" isInvalid={errors.time}>
+                      <FormLabel>Time</FormLabel>
+                      <Input
+                        {...register('time')}
+                        type="time"
+                        min="06:00"
+                        max="18:00"
+
+                        placeholder={updatedBooking.time}
+                        onChange={(e) =>
+                          setUpdatedBooking({ ...updatedBooking, time: e.target.value })
+                        }
+                      />
+                      <FormErrorMessage>{errors.time?.message}</FormErrorMessage>
+                    </FormControl>
+                  </Grid>
+
+                  {/* Address */}
+                  <FormControl id="address" isInvalid={errors.address}>
+                    <FormLabel>Address</FormLabel>
+                    <Input
+                      {...register('address')}
+                      type="text"
+                      placeholder={updatedBooking.address}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, address: e.target.value })
+                      }
+                    />
+                    <FormErrorMessage>{errors.address?.message}</FormErrorMessage>
+                  </FormControl>
+
+                  {/* Meesage */}
+                  <FormControl id="message" isInvalid={errors.message}>
+                    <FormLabel>Meessage</FormLabel>
+                    <Input
+                      {...register('message')}
+                      type="text"
+                      placeholder={updatedBooking.message}
+                      onChange={(e) =>
+                        setUpdatedBooking({ ...updatedBooking, meesage: e.target.value })
+                      }
+                    />
+                    <FormErrorMessage>{errors.message?.message}</FormErrorMessage>
+                  </FormControl>
+
+
+
+
+                </Stack>
+                <ModalFooter>
+                  <Button
+                    colorScheme="teal" mr={3} onClick={updateBookingHandler}>
+                    Update
+                  </Button>
+                  <Button variant="ghost" onClick={closeUpdateModal}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </form>
+            )}
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+
+    </>
   )
 }

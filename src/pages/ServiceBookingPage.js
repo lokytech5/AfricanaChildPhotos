@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ServiceBooking from '../components/booking/ServiceBooking'
-
+import Footer from '../components/shared/Footer';
 import {
   useToast,
   Modal,
@@ -105,6 +105,8 @@ export default function ServiceBookingPage() {
           </ModalContent>
         </Modal>
       )}
+
+      <Footer />
     </>
   )
 }

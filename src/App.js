@@ -10,6 +10,7 @@ import { loadUser } from './redux/userSlice';
 
 import AboutUsPage from "./pages/AboutUsPage";
 import LoginUserPage from "./pages/LoginUserPage";
+import GalleryPage from "./pages/GalleryPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
@@ -27,6 +28,7 @@ function App() {
           <NavigationMenu />
           <Routes>
             <Route path='/' element={<HomePage />} />
+            <Route path='/gallery' element={<GalleryPage />} />
             <Route path='/about' element={<AboutUsPage />} />
             <Route path='/login' element={<LoginUserPage />} />
             <Route path='/register' element={<RegisterUserPage />} />

@@ -38,6 +38,7 @@ export default function RegisterUserPage() {
             if (response.status === 200) {
                 console.log('Booking Successfully:', response.data);
                 setRegistrationSuccess(true);
+                
             } else {
                 console.error('Error while sending form data to the backend:', response.status, response.statusText);
             }

@@ -3,7 +3,7 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
-
+import Footer from '../shared/Footer';
 
 
 import {
@@ -54,55 +54,59 @@ export default function LoginUserForm(props) {
   }
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-      flexDirection="column"
-      bgGradient={bgGradient}
-    >
-      <Heading mb={8} color="white">
-        Login
-      </Heading>
-      <Box
-        maxWidth={isLargerThan768 ? '500px' : '100%'}
-        borderWidth={1}
-        borderRadius="lg"
-        p={8}
-        boxShadow="2xl"
-        minWidth="320px"
-        bg={formBg}
-      >
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <FormControl id="usename" mb={4} isInvalid={errors.username}>
-            <FormLabel>UserName</FormLabel>
-            <Input
-              {...register('username')}
-              type="text"
-              placeholder="Enter your userName" />
-            <FormErrorMessage>
-              {errors.username?.message}
-            </FormErrorMessage>
-          </FormControl>
+    <>
 
-          <FormControl id="password" mb={4} isInvalid={errors.password}>
-            <FormLabel>Password</FormLabel>
-            <Input
-              {...register('password')}
-              type="password"
-              placeholder="Enter your password" />
-            <FormErrorMessage>
-              {errors.password?.message}
-            </FormErrorMessage>
-          </FormControl>
-          <Button type="submit" colorScheme="teal" mb={4} width="100%">
-            Login
-          </Button>
-          <Link as={RouterLink} to="/register" color="teal.500">
-            Don't have an account? Register
-          </Link>
-        </form>
-      </Box>
-    </Flex>
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        minHeight="100vh"
+        flexDirection="column"
+        bgGradient={bgGradient}
+      >
+        <Heading mb={8} color="white">
+          Login
+        </Heading>
+        <Box
+          maxWidth={isLargerThan768 ? '500px' : '100%'}
+          borderWidth={1}
+          borderRadius="lg"
+          p={8}
+          boxShadow="2xl"
+          minWidth="320px"
+          bg={formBg}
+        >
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <FormControl id="usename" mb={4} isInvalid={errors.username}>
+              <FormLabel>UserName</FormLabel>
+              <Input
+                {...register('username')}
+                type="text"
+                placeholder="Enter your userName" />
+              <FormErrorMessage>
+                {errors.username?.message}
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl id="password" mb={4} isInvalid={errors.password}>
+              <FormLabel>Password</FormLabel>
+              <Input
+                {...register('password')}
+                type="password"
+                placeholder="Enter your password" />
+              <FormErrorMessage>
+                {errors.password?.message}
+              </FormErrorMessage>
+            </FormControl>
+            <Button type="submit" colorScheme="teal" mb={4} width="100%">
+              Login
+            </Button>
+            <Link as={RouterLink} to="/register" color="teal.500">
+              Don't have an account? Register
+            </Link>
+          </form>
+        </Box>
+      </Flex>
+      <Footer />
+    </>
   );
 }

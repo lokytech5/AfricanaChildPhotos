@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Footer from '../shared/Footer';
 
 import {
   Box,
@@ -70,81 +71,87 @@ export default function RegisterUserForm(props) {
   }
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-      flexDirection="column"
-      bgGradient={bgGradient}
-    >
-      <Heading mb={8} color="white">
-        Register
-      </Heading>
-      <Box
-        maxWidth={isLargerThan768 ? '500px' : '100%'}
-        borderWidth={1}
-        borderRadius="lg"
-        p={8}
-        boxShadow="2xl"
-        minWidth="320px"
-        bg={formBg}
+    <>
+
+
+      <Flex
+        alignItems="center"
+        justifyContent="center"
+        minHeight="100vh"
+        flexDirection="column"
+        bgGradient={bgGradient}
       >
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <FormControl id="username" mb={4} isInvalid={errors.username}>
-            <FormLabel>Username</FormLabel>
-            <Input
-              {...register('username')}
-              type="text"
-              placeholder="Enter your userName" />
-            <FormErrorMessage>
-              {errors.username?.message}
-            </FormErrorMessage>
-          </FormControl>
+        <Heading mb={8} color="white">
+          Register
+        </Heading>
+        <Box
+          maxWidth={isLargerThan768 ? '500px' : '100%'}
+          borderWidth={1}
+          borderRadius="lg"
+          p={8}
+          boxShadow="2xl"
+          minWidth="320px"
+          bg={formBg}
+        >
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <FormControl id="username" mb={4} isInvalid={errors.username}>
+              <FormLabel>Username</FormLabel>
+              <Input
+                {...register('username')}
+                type="text"
+                placeholder="Enter your userName" />
+              <FormErrorMessage>
+                {errors.username?.message}
+              </FormErrorMessage>
+            </FormControl>
 
 
-          <FormControl id="email" mb={4} isInvalid={errors.email}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              {...register('email')}
-              type="email"
-              placeholder="Enter your email" />
-            <FormErrorMessage>
-              {errors.email?.message}
-            </FormErrorMessage>
-          </FormControl>
+            <FormControl id="email" mb={4} isInvalid={errors.email}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                {...register('email')}
+                type="email"
+                placeholder="Enter your email" />
+              <FormErrorMessage>
+                {errors.email?.message}
+              </FormErrorMessage>
+            </FormControl>
 
-          <FormControl id="password" mb={4} isInvalid={errors.password}>
-            <FormLabel>Password</FormLabel>
-            <Input
-              {...register('password')}
-              type="password"
-              placeholder="Enter your password" />
-            <FormErrorMessage>
-              {errors.password?.message}
-            </FormErrorMessage>
-          </FormControl>
+            <FormControl id="password" mb={4} isInvalid={errors.password}>
+              <FormLabel>Password</FormLabel>
+              <Input
+                {...register('password')}
+                type="password"
+                placeholder="Enter your password" />
+              <FormErrorMessage>
+                {errors.password?.message}
+              </FormErrorMessage>
+            </FormControl>
 
-          <FormControl id="confirm-password" mb={4} isInvalid={errors.confirmPassword}>
-            <FormLabel>Confirm Password</FormLabel>
-            <Input
-              {...register('confirmPassword')}
-              type="password"
-              placeholder="Confirm your password"
-            />
-            <FormErrorMessage>
-              {errors.confirmPassword?.message}
-            </FormErrorMessage>
-          </FormControl>
+            <FormControl id="confirm-password" mb={4} isInvalid={errors.confirmPassword}>
+              <FormLabel>Confirm Password</FormLabel>
+              <Input
+                {...register('confirmPassword')}
+                type="password"
+                placeholder="Confirm your password"
+              />
+              <FormErrorMessage>
+                {errors.confirmPassword?.message}
+              </FormErrorMessage>
+            </FormControl>
 
 
-          <Button type="submit" colorScheme="teal" mb={4} width="100%">
-            Register
-          </Button>
-          <Link as={RouterLink} to="/login" color="teal.500">
-            Already have an account? Login
-          </Link>
-        </form>
-      </Box>
-    </Flex>
+            <Button type="submit" colorScheme="teal" mb={4} width="100%">
+              Register
+            </Button>
+            <Link as={RouterLink} to="/login" color="teal.500">
+              Already have an account? Login
+            </Link>
+          </form>
+        </Box>
+      </Flex>
+
+      <Footer />
+    </>
   )
 }

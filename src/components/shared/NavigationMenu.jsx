@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
+import AvatarUpload from '../users/AvatarUpload';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, login, setIsAuthenticated, loadUser } from '../../redux/userSlice';
@@ -37,6 +38,7 @@ import {
 
 
 export default function NavigationMenu() {
+  const [forceUpdate, setForceUpdate] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const [isOpen, setIsOpen] = React.useState(false);
@@ -46,6 +48,8 @@ export default function NavigationMenu() {
   const userRole = useSelector((state) => state.user.role);
   const user = useSelector((state) => state.user.user);
   const username = useSelector((state) => state.user.username);
+  const avatarUrl = useSelector((state) => state.user.avatar);
+  console.log("Avatar URL from Redux state:", avatarUrl);
   console.log('User object:', user);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const loading = useSelector((state) => state.user.isloading);
@@ -55,6 +59,15 @@ export default function NavigationMenu() {
 
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
+
+  //*Updating Avatar state
+  const renderAvatar = () => {
+    if (avatarUrl) {
+      return avatarUrl;
+    } else {
+      return null;
+    }
+  };
 
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
@@ -99,7 +112,7 @@ export default function NavigationMenu() {
       {isMobile ? (
         <VStack spacing={4} alignItems="start" as="ul" listStyleType="none">
           <MenuItem to="/">Home</MenuItem>
-          <MenuItem to="/about">About Us</MenuItem>
+          <MenuItem to="/gallery">Gallery</MenuItem>
           <MenuItem to="/service">Booking</MenuItem>
           {!isAuthenticated && (
             <>
@@ -110,7 +123,17 @@ export default function NavigationMenu() {
           {isAuthenticated && userRole === 'user' && (
             <MenuItem to="/profile">
               <Flex alignItems="center">
-                <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+                {user ? (
+                  <Avatar
+                    key={user.avatar}
+                    size="sm"
+                    name={!user.avatar ? `${username}` : ''}
+                    src="https://bit.ly/dan-abramov"
+                  />
+                ) : (
+                  <Avatar size="sm" name={username ? `${username}` : ''} />
+                )}
+
                 <Text ml={2}>{username ? `Welcome` : ''}</Text>
               </Flex>
             </MenuItem>
@@ -124,6 +147,8 @@ export default function NavigationMenu() {
 
             </MenuItem>
           )}
+
+          <MenuItem to="/about">About Us</MenuItem>
           {isAuthenticated && (
             <MenuItem onClick={handleLogout}>
               Logout
@@ -132,6 +157,7 @@ export default function NavigationMenu() {
         </VStack>
       ) : (<HStack spacing={4} alignItems="center" as="ul" listStyleType="none">
         <MenuItem to="/">Home</MenuItem>
+        <MenuItem to="/gallery">Gallery</MenuItem>
         <MenuItem to="/about">About Us</MenuItem>
         <MenuItem to="/service">Booking</MenuItem>
         {!isAuthenticated && (
@@ -144,7 +170,19 @@ export default function NavigationMenu() {
         {isAuthenticated && userRole === 'user' && (
           <MenuItem to="/profile">
             <Flex alignItems="center">
-              <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+
+              {user ? (
+                <Avatar
+                  key={user.avatar}
+                  size="sm"
+                  name={!user.avatar ? `${username}` : ''}
+                  src="https://bit.ly/dan-abramov"
+                />
+                
+              ) : (
+                <Avatar size="sm" name={username ? `${username}` : ''} />
+              )}
+
               <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Welcome` : ''}</Text>
             </Flex>
 
@@ -172,70 +210,73 @@ export default function NavigationMenu() {
   );
 
   return (
-    <Box bg={colorMode === 'light' ? 'gray.100' : 'gray.900'} p={4}>
-      <Flex>
-        {/* Brand name and logo placeholder */}
-        <Text fontWeight="bold" fontSize="lg">
-          AfricanaChild
-        </Text>
+    <>
 
-        {/* Dark mode and light mode switch */}
-        <IconButton
-          aria-label="Toggle color mode"
-          icon={colorMode === 'light' ? <FaMoon /> : <FiSun />}
-          ml={6}
-          onClick={toggleColorMode}
-          mr={2} // Add marginRight here
-        />
+      <Box bg={colorMode === 'light' ? 'gray.100' : 'gray.900'} p={4}>
+        <Flex>
+          {/* Brand name and logo placeholder */}
+          <Text fontWeight="bold" fontSize="lg">
+            AfricanaChild
+          </Text>
 
-        <Spacer />
-
-
-        {!loading && isLargerThan768 ? (
-          // Desktop menu
-          <MenuItems isMobile={false} />
-        ) : (
-          // Mobile menu
-          <>
-            {!loading && (
-              <IconButton
-                ref={btnRef}
-                aria-label="Open menu"
-                icon={<GiHamburgerMenu />}
-                onClick={openDrawer}
-              />
-            )}
-            <Drawer
-              isOpen={isOpen}
-              placement="right"
-              onClose={closeDrawer}
-              finalFocusRef={btnRef}
-            >
-              <DrawerOverlay />
-              <DrawerContent>
-                <DrawerCloseButton />
-                <DrawerHeader>Menu</DrawerHeader>
-                <DrawerBody>
-                  <VStack align="start" spacing={4}>
-                    <MenuItems isMobile={true} />
-                  </VStack>
-                </DrawerBody>
-              </DrawerContent>
-            </Drawer>
-          </>
-        )}
-
-        {/* Add this condition to render the Spinner */}
-        {loading && (
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
+          {/* Dark mode and light mode switch */}
+          <IconButton
+            aria-label="Toggle color mode"
+            icon={colorMode === 'light' ? <FaMoon /> : <FiSun />}
+            ml={6}
+            onClick={toggleColorMode}
+            mr={2} // Add marginRight here
           />
-        )}
-      </Flex>
-    </Box>
+
+          <Spacer />
+
+
+          {!loading && isLargerThan768 ? (
+            // Desktop menu
+            <MenuItems isMobile={false} />
+          ) : (
+            // Mobile menu
+            <>
+              {!loading && (
+                <IconButton
+                  ref={btnRef}
+                  aria-label="Open menu"
+                  icon={<GiHamburgerMenu />}
+                  onClick={openDrawer}
+                />
+              )}
+              <Drawer
+                isOpen={isOpen}
+                placement="right"
+                onClose={closeDrawer}
+                finalFocusRef={btnRef}
+              >
+                <DrawerOverlay />
+                <DrawerContent>
+                  <DrawerCloseButton />
+                  <DrawerHeader>Menu</DrawerHeader>
+                  <DrawerBody>
+                    <VStack align="start" spacing={4}>
+                      <MenuItems isMobile={true} />
+                    </VStack>
+                  </DrawerBody>
+                </DrawerContent>
+              </Drawer>
+            </>
+          )}
+
+          {/* Add this condition to render the Spinner */}
+          {loading && (
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
+        </Flex>
+      </Box>
+    </>
   );
 }

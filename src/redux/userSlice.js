@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit'
 import jwt_decode from 'jwt-decode';
 
 const initialState = {
@@ -7,6 +7,7 @@ const initialState = {
     role: null,
     name: '',
     username: localStorage.getItem('username'),
+    avatar: '',
 };
 
 export const loadUser = createAsyncThunk('user/loadUser', async () => {
@@ -17,6 +18,7 @@ export const loadUser = createAsyncThunk('user/loadUser', async () => {
     }
     return null;
 });
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -34,9 +36,16 @@ const userSlice = createSlice({
             state.role = null;
             state.isAuthenticated = false;
         },
-
         setIsAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
+        },
+        updateUser: (state, action) => {
+            state.id = action.payload._id;
+            state.username = action.payload.username;
+            state.avatar = action.payload.avatar;
+        },
+        updateAvatar: (state, action) => {
+            state.avatar = action.payload;
         },
     },
 
@@ -56,6 +65,7 @@ const userSlice = createSlice({
     },
 });
 
-export const { login, logout, setIsAuthenticated } = userSlice.actions;
+
+export const { login, logout, setIsAuthenticated, updateUser, updateAvatar } = userSlice.actions;
 
 export default userSlice.reducer;
