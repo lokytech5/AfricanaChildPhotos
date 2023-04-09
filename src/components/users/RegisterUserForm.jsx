@@ -37,8 +37,8 @@ export default function RegisterUserForm(props) {
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const bgGradient = useColorModeValue(
-    'linear(to-r, teal.300, teal.500)',
-    'linear(to-r, teal.600, teal.800)'
+    'linear(to-r, blue.300, blue.500)',
+    'linear(to-r, blue.600, blue.800)'
   );
 
   const formBg = useColorModeValue('white', 'gray.700');
@@ -141,10 +141,10 @@ export default function RegisterUserForm(props) {
             </FormControl>
 
 
-            <Button type="submit" colorScheme="teal" mb={4} width="100%">
+            <Button type="submit" colorScheme="blue" mb={4} width="100%">
               Register
             </Button>
-            <Link as={RouterLink} to="/login" color="teal.500">
+            <Link as={RouterLink} to="/login" color="blue.500">
               Already have an account? Login
             </Link>
           </form>

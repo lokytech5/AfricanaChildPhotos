@@ -21,8 +21,8 @@ export default function Footer() {
                 </VStack>
                 <VStack align="start" spacing={2}>
                     <Text fontWeight="bold" color={accentColor}>Contact Us</Text>
-                    <Text>Email: info@photography.com</Text>
-                    <Text>Phone: +1 (234) 567-8901</Text>
+                    <Text>Email:  africanachildphotography@gmail.com</Text>
+                    <Text>Hotline call: 07015307662 </Text>
                 </VStack>
                 <VStack spacing={2} align="start">
                     <HStack spacing={4}>

@@ -37,8 +37,8 @@ export default function LoginUserForm(props) {
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const bgGradient = useColorModeValue(
-    'linear(to-r, teal.300, teal.500)',
-    'linear(to-r, teal.600, teal.800)'
+    'linear(to-r, blue.300, blue.500)',
+    'linear(to-r, blue.600, blue.800)'
   );
 
   const formBg = useColorModeValue('white', 'gray.700');
@@ -97,10 +97,10 @@ export default function LoginUserForm(props) {
                 {errors.password?.message}
               </FormErrorMessage>
             </FormControl>
-            <Button type="submit" colorScheme="teal" mb={4} width="100%">
+            <Button type="submit" colorScheme="blue" mb={4} width="100%">
               Login
             </Button>
-            <Link as={RouterLink} to="/register" color="teal.500">
+            <Link as={RouterLink} to="/register" color="#F2F2F2">
               Don't have an account? Register
             </Link>
           </form>
