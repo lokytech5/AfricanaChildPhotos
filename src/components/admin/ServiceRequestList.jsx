@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { API_BASE_URL } from '../../config/config';
 import {
   Text,
   Button,
@@ -45,7 +46,7 @@ export default function ServiceRequestList() {
   useEffect(() => {
     const fetchServiceData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services/');
+        const response = await axios.get(`${API_BASE_URL}/services/`);
         if (response.status === 200 || response.status === 201) {
           console.log('Fetched data:', response.data); // Add this line to log the data
           setServiceData(response.data.serviceRequest);
@@ -81,7 +82,7 @@ export default function ServiceRequestList() {
   const token = localStorage.getItem('token');
   const deleteServiceRequestHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/services/admin/${id}`, {
+      await axios.delete(`https://awful-tuna-beret.cyclic.app/api/services/admin/${id}`, {
         headers: {
           'x-auth-token': token,
         },

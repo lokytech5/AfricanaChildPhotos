@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import RegisterUserForm from '../components/users/RegisterUserForm'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
+import { API_BASE_URL } from '../config/config';
 
 import {
     useToast,
@@ -15,6 +16,8 @@ import {
     ModalBody,
     ModalCloseButton,
     Button,
+    Spinner,
+    Center,
 }
     from '@chakra-ui/react';
 
@@ -22,6 +25,7 @@ import {
 export default function RegisterUserPage() {
 
     const [registrationSuccess, setRegistrationSuccess] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const toast = useToast();
     const navigate = useNavigate();
@@ -32,13 +36,14 @@ export default function RegisterUserPage() {
     };
 
     const addRegisterUserHandler = async (registerUserData) => {
+        setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:5000/api/users', registerUserData);
+            const response = await axios.post(`${API_BASE_URL}/users/`, registerUserData);
             console.log("Response status:", response.status);
-            if (response.status === 200) {
+            if (response.status === 201) {
                 console.log('Booking Successfully:', response.data);
                 setRegistrationSuccess(true);
-                
+
             } else {
                 console.error('Error while sending form data to the backend:', response.status, response.statusText);
             }
@@ -59,12 +64,16 @@ export default function RegisterUserPage() {
                 isClosable: true,
             });
 
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <>
-            <RegisterUserForm onAddRegisterUser={addRegisterUserHandler} />
+            <RegisterUserForm
+                onAddRegisterUser={addRegisterUserHandler}
+                isLoading={isLoading} />
             <Modal isOpen={registrationSuccess} onClose={handleClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -80,8 +89,6 @@ export default function RegisterUserPage() {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
-
         </>
     )
 }

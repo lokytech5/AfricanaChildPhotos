@@ -85,7 +85,7 @@ export default function ServiceBooking(props) {
             justifyContent="center"
             minHeight="100vh"
             flexDirection="column"
-            bgGradient="linear(to-r, teal.300, teal.500)"
+            bgGradient="linear(to-r, blue.300, blue.500)"
         >
             <Heading mb={8} color="white">
                 Service Booking
@@ -163,7 +163,7 @@ export default function ServiceBooking(props) {
                             <Textarea {...register('message')} placeholder="Enter a message if any (optional)" />
                         </FormControl>
 
-                        <Button type="submit" colorScheme="teal" mb={4} width="100%">
+                        <Button type="submit" colorScheme="blue" mb={4} width="100%">
                             Submit
                         </Button>
                     </Stack>
@@ -172,11 +172,11 @@ export default function ServiceBooking(props) {
                 <Box mt={6} textAlign="center">
                     <Text fontSize="lg">
                         Please{' '}
-                        <Link color="teal.500" href="/login">
+                        <Link color="orange" href="/login">
                             log in
                         </Link>{' '}
                         or{' '}
-                        <Link color="teal.500" href="/register">
+                        <Link color="orange" href="/register">
                             register
                         </Link>{' '}
                         to book a service.

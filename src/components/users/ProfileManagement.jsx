@@ -5,8 +5,9 @@ import axios from 'axios';
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+
+import { API_BASE_URL } from '../../config/config';
 import {
-    Box,
     Button,
     FormControl,
     FormLabel,
@@ -39,6 +40,7 @@ const formValidationSchema = z.object({
 
 export default function ProfileManagement() {
     const [profile, setProfile] = useState();
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [updateProfile, setUpdateProfile] = useState();
     const [isLoading, setIsLoading] = useState(true);
     const [isUpdating, setIsUpdating] = useState(false);
@@ -48,7 +50,7 @@ export default function ProfileManagement() {
 
     const { register,
         handleSubmit,
-        formState: { errors }, getValues, setError, } = useForm({
+        formState: { errors }, getValues, setError, reset } = useForm({
             resolver: zodResolver(formValidationSchema)
         });
 
@@ -69,7 +71,7 @@ export default function ProfileManagement() {
         const fetchProfile = async () => {
             setIsUpdating(true);
             try {
-                const response = await axios.get(`http://localhost:5000/api/users/me`, {
+                const response = await axios.get(`${API_BASE_URL}/users/me`, {
                     headers: {
                         'x-auth-token': token,
                     },
@@ -102,7 +104,7 @@ export default function ProfileManagement() {
     const updateUsersProfile = async (data) => {
         setIsUpdating(true);
         try {
-            const response = await axios.put(`http://localhost:5000/api/users/me`, data, {
+            const response = await axios.put(`${API_BASE_URL}/users/me`, data, {
                 headers: {
                     'x-auth-token': token,
                 },
@@ -119,8 +121,11 @@ export default function ProfileManagement() {
     };
 
     const handleUpdateConfirmation = async () => {
+        setIsSubmitting(true);
         setIsModalOpen(false);
+        reset();
         const updatedProfile = await updateUsersProfile(formData);
+        setIsSubmitting(false);
         setProfile(updatedProfile);
         setUpdateProfile((prevState) => !prevState);
     };
@@ -207,7 +212,9 @@ export default function ProfileManagement() {
                                 {customError}
                             </FormErrorMessage>
                         </FormControl>
-                        <Button type="submit" colorScheme="teal" mb={4} width="100%">
+                        <Button type="submit" colorScheme="teal" mb={4} width="100%"
+                            isLoading={isSubmitting}
+                            spinner={<Spinner />}>
                             Update Profile
                         </Button>
                     </form>

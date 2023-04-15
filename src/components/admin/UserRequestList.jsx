@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
+import { API_BASE_URL } from '../../config/config';
 import {
   Text,
   Button,
@@ -50,7 +51,7 @@ export default function UserRequestList() {
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/users/');
+        const response = await axios.get(`${API_BASE_URL}/users/`);
         if (response.status === 200 || response.status === 201) {
           console.log('Fetched data:', response.data); // Add this line to log the data
           setUserData(response.data.user);
@@ -74,7 +75,7 @@ export default function UserRequestList() {
 
   const deleteUsersRequestHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/admin/${id}`, {
+      await axios.delete(`${API_BASE_URL}/users/admin/${id}/`, {
         headers: {
           'x-auth-token': token,
         },

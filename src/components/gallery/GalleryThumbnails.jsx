@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { API_BASE_URL } from '../../config/config';
 import {
     Grid, GridItem, Box, Image, Heading, Spinner
 } from '@chakra-ui/react';
@@ -19,7 +20,7 @@ export default function GalleryThumbnails({ onFolderClick }) {
     useEffect(() => {
         const fetchThumbnails = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/images');
+                const response = await axios.get(`${API_BASE_URL}/images`);
                 setThumbnails(response.data.thumbnails);
                 setIsLoading(false);
             } catch (error) {

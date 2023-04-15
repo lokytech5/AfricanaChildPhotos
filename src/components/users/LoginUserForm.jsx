@@ -97,7 +97,7 @@ export default function LoginUserForm(props) {
                 {errors.password?.message}
               </FormErrorMessage>
             </FormControl>
-            <Button type="submit" colorScheme="blue" mb={4} width="100%">
+            <Button type="submit" colorScheme="blue" mb={4} width="100%" isLoading={props.isLoading}>
               Login
             </Button>
             <Link as={RouterLink} to="/register" color="#F2F2F2">

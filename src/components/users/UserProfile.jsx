@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react';
 import UserBookingDetails from './UserBookingDetails';
 import ProfileManagement from './ProfileManagement';
-import AvatarUpload from './AvatarUpload';
 import Footer from '../shared/Footer';
 import {
-    Box,
-    Flex,
     Heading,
     Container,
-    Spacer,
     Tab,
     Tabs,
     TabPanel,
@@ -16,8 +12,6 @@ import {
     TabList,
     useColorModeValue,
     VStack,
-    HStack,
-    Divider,
 } from "@chakra-ui/react";
 
 export default function UserProfile() {
@@ -27,7 +21,7 @@ export default function UserProfile() {
 
     return (
         <>
-            <Container maxW="container.xl" py={10}>
+            <Container maxW="container.xl" py={10} px={{ base: 4, md: 6 }}>
                 <VStack spacing={8} align="stretch">
                     <Heading as="h1" fontSize="3xl">
                         User Profile
@@ -36,7 +30,6 @@ export default function UserProfile() {
                         <TabList mb="1em">
                             <Tab>Booking Details</Tab>
                             <Tab>Profile Management</Tab>
-                            <Tab>Upload Avatar</Tab>
                         </TabList>
                         <TabPanels>
                             <TabPanel>
@@ -63,20 +56,6 @@ export default function UserProfile() {
                                     spacing={10}
                                 >
                                     <ProfileManagement />
-                                </VStack>
-                            </TabPanel>
-
-                            <TabPanel>
-                                <VStack
-                                    bg={bg}
-                                    p={6}
-                                    borderRadius="lg"
-                                    borderWidth={1}
-                                    borderColor={borderColor}
-                                    boxShadow="md"
-                                    spacing={10}
-                                >
-                                    <AvatarUpload />
                                 </VStack>
                             </TabPanel>
                         </TabPanels>

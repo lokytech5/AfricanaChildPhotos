@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
-import AvatarUpload from '../users/AvatarUpload';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, login, setIsAuthenticated, loadUser } from '../../redux/userSlice';
@@ -178,7 +177,7 @@ export default function NavigationMenu() {
                   name={!user.avatar ? `${username}` : ''}
                   src="https://bit.ly/dan-abramov"
                 />
-                
+
               ) : (
                 <Avatar size="sm" name={username ? `${username}` : ''} />
               )}

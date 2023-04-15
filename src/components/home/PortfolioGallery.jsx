@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Grid, Image, AspectRatio } from "@chakra-ui/react";
 
-import img1 from '../../assets/images/img1.jpg'
+import img15 from '../../assets/images/img15.jpg'
 import img2 from '../../assets/images/img2.jpg'
 import img3 from '../../assets/images/img3.jpg'
 import img4 from '../../assets/images/Img4.jpg'
@@ -10,6 +10,7 @@ import img6 from '../../assets/images/img6.jpg'
 import img7 from '../../assets/images/img7.jpg'
 import img8 from '../../assets/images/img8.jpg'
 import img9 from '../../assets/images/img9.jpg'
+import img13 from '../../assets/images/img13.jpg'
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation, Pagination, Autoplay, EffectCoverflow } from "swiper";
@@ -22,7 +23,7 @@ import "swiper/swiper-bundle.min.css";
 SwiperCore.use([Navigation, Pagination, Autoplay, EffectCoverflow]);
 
 const images = [
-    img1,
+    img15,
     img2,
     img3,
     img4,
@@ -31,6 +32,7 @@ const images = [
     img7,
     img8,
     img9,
+    img13,
     // ... add more image paths
 ];
 export default function PortfolioGallery() {

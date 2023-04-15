@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast, Text } from '@chakra-ui/react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+import { API_BASE_URL } from '../config/config';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { login, setIsAuthenticated } from '../redux/userSlice'
@@ -11,13 +12,16 @@ import { login, setIsAuthenticated } from '../redux/userSlice'
 export default function LoginUserPage() {
 
   const [formData, setFormData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const addLoginHandler = async (loginData) => {
+    setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth', loginData);
+      const response = await axios.post(`${API_BASE_URL}/auth`, loginData);
 
       if (response.status === 200 || response.status === 201) {
         console.log("Token stored in local storage:", localStorage.getItem('token'));
@@ -80,10 +84,13 @@ export default function LoginUserPage() {
           isClosable: true,
         });
       }
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
     <LoginUserForm
-      onAddLogin={addLoginHandler} />
+      onAddLogin={addLoginHandler}
+      isLoading={isLoading} />
   )
 }

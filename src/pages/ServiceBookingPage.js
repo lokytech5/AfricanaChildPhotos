@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ServiceBooking from '../components/booking/ServiceBooking'
 import Footer from '../components/shared/Footer';
+import { API_BASE_URL } from '../config/config';
 import {
   useToast,
   Modal,
@@ -32,7 +33,7 @@ export default function ServiceBookingPage() {
   const addServiceBookingHandler = async (serviceData) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/services', serviceData, {
+      const response = await axios.post(`${API_BASE_URL}/services`, serviceData, {
         headers: {
           'x-auth-token': token,
         }

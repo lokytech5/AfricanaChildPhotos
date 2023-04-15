@@ -1,9 +1,12 @@
 import React from 'react'
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@chakra-ui/react';
 import BookingCTA from './BookingCTA';
 import PortfolioGallery from './PortfolioGallery';
 import Testimonials from './Testimonials';
 import Footer from '../shared/Footer'
 import { motion } from "framer-motion";
+
 import {
     Box,
     Flex,
@@ -26,7 +29,7 @@ export default function Home() {
         dark: '#333333',
         dark: '#F2F2F2',
     }
-    const buttonSize = useBreakpointValue({ base: "sm", md: "md" });
+    const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
     return (
 
 
@@ -35,11 +38,14 @@ export default function Home() {
 
                 <Box position="relative" minHeight={{ base: "50vh", md: "100vh" }} width="100%">
 
-                    <motion.Flex
-                        alignItems="center"
-                        justifyContent="space-between"
-                        padding="1rem"
-                        flexWrap={{ base: "wrap", md: "nowrap" }}
+                    <motion.div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            padding: "1rem",
+                            flexWrap: useBreakpointValue({ base: "wrap", md: "nowrap" }),
+                        }}
                         variants={fadeIn}
                         initial="initial"
                         animate="animate"
@@ -61,7 +67,7 @@ export default function Home() {
                             padding={{ base: "2rem", md: "4rem" }}
                             flexDirection="column"
                         >
-                            <VStack spacing={8} alignItems="center" textAlign="center">
+                            <VStack spacing={8} alignItems="center" textAlign="center" mt={20}>
                                 <Heading as="h1" size="3xl" color="blue.700">
                                     Capture Your Moments with AfricanaChild
                                 </Heading>
@@ -70,13 +76,15 @@ export default function Home() {
                                     community and explore the world through your lens.
                                 </Text>
                                 <HStack spacing={4}>
-                                    <Button size={buttonSize} variant="outline" colorScheme="blue">
-                                        Explore
-                                    </Button>
+                                    <Link as={RouterLink} to='/gallery'>
+                                        <Button size={buttonSize} variant="outline" colorScheme="blue">
+                                            Explore
+                                        </Button>
+                                    </Link>
                                 </HStack>
                             </VStack>
                         </Flex>
-                    </motion.Flex>
+                    </motion.div>
                 </Box>
                 <motion.div variants={fadeIn} initial="initial" animate="animate">
                     <Box textAlign="center" py={8}>

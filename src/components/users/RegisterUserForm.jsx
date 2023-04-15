@@ -141,7 +141,7 @@ export default function RegisterUserForm(props) {
             </FormControl>
 
 
-            <Button type="submit" colorScheme="blue" mb={4} width="100%">
+            <Button type="submit" colorScheme="blue" mb={4} width="100%" isLoading={props.isLoading}>
               Register
             </Button>
             <Link as={RouterLink} to="/login" color="blue.500">

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { API_BASE_URL } from '../../config/config';
 import {
   Box,
   FormControl,
@@ -111,7 +112,7 @@ export default function UserBookingDetails() {
   useEffect(() => {
     const fetchUserBookingData = async (userId) => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/users/booking/${userId}`, {
+        const response = await axios.get(`${API_BASE_URL}/users/booking/${userId}`, {
           headers: {
             'x-auth-token': token,
           },
@@ -140,7 +141,7 @@ export default function UserBookingDetails() {
   const updateBookingHandler = handleSubmit(async (formData) => {
     try {
 
-      const response = await axios.put(`http://localhost:5000/api/users/booking/${bookingToUpdate._id}`, updatedBooking, {
+      const response = await axios.put(`${API_BASE_URL}/users/booking/${bookingToUpdate._id}`, updatedBooking, {
         headers: {
           'x-auth-token': token,
         },
@@ -180,7 +181,7 @@ export default function UserBookingDetails() {
   //*delete Userbooking by id
   const deleteUserBookingDataHandler = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/booking/${id}`, {
+      await axios.delete(`${API_BASE_URL}/users/booking/${id}`, {
         headers: {
           'x-auth-token': token,
         },
@@ -425,27 +426,10 @@ export default function UserBookingDetails() {
                     <FormErrorMessage>{errors.address?.message}</FormErrorMessage>
                   </FormControl>
 
-                  {/* Meesage */}
-                  <FormControl id="message" isInvalid={errors.message}>
-                    <FormLabel>Meessage</FormLabel>
-                    <Input
-                      {...register('message')}
-                      type="text"
-                      placeholder={updatedBooking.message}
-                      onChange={(e) =>
-                        setUpdatedBooking({ ...updatedBooking, meesage: e.target.value })
-                      }
-                    />
-                    <FormErrorMessage>{errors.message?.message}</FormErrorMessage>
-                  </FormControl>
-
-
-
-
                 </Stack>
                 <ModalFooter>
                   <Button
-                    colorScheme="teal" mr={3} onClick={updateBookingHandler}>
+                    colorScheme="blue" mr={3} onClick={updateBookingHandler}>
                     Update
                   </Button>
                   <Button variant="ghost" onClick={closeUpdateModal}>

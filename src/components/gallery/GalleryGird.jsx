@@ -3,6 +3,7 @@ import axios from 'axios'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Footer from '../shared/Footer';
+import { API_BASE_URL } from '../../config/config';
 import {
     Grid, GridItem, Modal,
     ModalOverlay,
@@ -29,7 +30,7 @@ export default function GalleryGird({ folder }) {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/images/${folder}`)
+                const response = await axios.get(`${API_BASE_URL}/images/${folder}`)
                 setImages(response.data.imageUrls)
                 setIsLoading(false)
                 console.log(setImages(response.data.imageUrls));
