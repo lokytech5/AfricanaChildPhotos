@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+
 import { API_BASE_URL } from '../../config/config';
 import {
-    Grid, GridItem, Box, Image, Heading, Spinner
+    Grid, GridItem, Box, Flex, Image, Text, Button, Heading, Spinner, useColorMode
 } from '@chakra-ui/react';
 import { useBreakpointValue } from '@chakra-ui/react';
 
@@ -11,9 +12,10 @@ export default function GalleryThumbnails({ onFolderClick }) {
 
     const [thumbnails, setThumbnails] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const { colorMode, toggleColorMode } = useColorMode();
 
-    const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
-
+    const columns = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4, xl: 5 });
+    const imageHeight = useBreakpointValue({ base: "300px", sm: "400px", md: "500px" });
 
 
 
@@ -49,7 +51,7 @@ export default function GalleryThumbnails({ onFolderClick }) {
                 />
             ) : (<Grid templateColumns={`repeat(${columns}, 1fr)`} gap={10} padding={10}>
                 {Object.keys(thumbnails).map((folder) => (
-                    <GridItem key={folder} onClick={() => onFolderClick(folder)}>
+                    <GridItem key={folder}>
                         <Box
                             as="figure"
                             pos="relative"
@@ -69,7 +71,7 @@ export default function GalleryThumbnails({ onFolderClick }) {
                                 alt={folder}
                                 objectFit="cover"
                                 width="100%"
-                                height="200px"
+                                height={imageHeight}
                                 transition="transform 0.3s"
                                 _hover={{
                                     transform: 'scale(1.1)',
@@ -90,10 +92,22 @@ export default function GalleryThumbnails({ onFolderClick }) {
                                     opacity: 1,
                                 }}
                             >
-                                <Heading as="h3" size="md" isTruncated textAlign="center">
-                                    {folder}
-                                </Heading>
+
                             </Box>
+
+                            {/* Added Text and Button components */}
+                            <Flex p={3} direction="column" alignItems="center" justifyContent="center">
+                                <Text mb={3} fontFamily="Lato, sans-serif">
+                                    {folder}
+                                </Text>
+                                <Button
+                                    fontFamily="Lato, sans-serif"
+                                    colorScheme="blue" onClick={() => onFolderClick(folder)}>
+                                    View More
+                                </Button>
+                            </Flex>
+                            {/* End of added components */}
+
                         </Box>
                     </GridItem>
                 ))}

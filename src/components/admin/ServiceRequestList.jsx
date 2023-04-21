@@ -82,7 +82,7 @@ export default function ServiceRequestList() {
   const token = localStorage.getItem('token');
   const deleteServiceRequestHandler = async (id) => {
     try {
-      await axios.delete(`https://awful-tuna-beret.cyclic.app/api/services/admin/${id}`, {
+      await axios.delete(`${API_BASE_URL}/services/admin/${id}`, {
         headers: {
           'x-auth-token': token,
         },
@@ -114,7 +114,7 @@ export default function ServiceRequestList() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/services/admin/${id}`,
+        `${API_BASE_URL}/services/admin/${id}`,
         { status },
         {
           headers: {

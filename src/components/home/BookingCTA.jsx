@@ -5,10 +5,15 @@ export default function BookingCTA() {
     return (
         <Box padding="2rem" background="white">
             <VStack spacing={8} alignItems="center">
-                <Heading as="h2" size="2xl" color="blue.700">
+                <Heading as="h2" size="2xl"
+                    fontFamily="Playfair Display, serif"
+                    color="blue.700">
                     Ready to Capture Your Story?
                 </Heading>
-                <Text fontSize={{ base: "md", md: "lg" }} color="gray.600">
+                <Text
+                    fontSize={{ base: "md", md: "lg" }}
+                    color="gray.600"
+                    fontFamily="Lato, sans-serif">
                     Book a session with our photographer today and let us help you create lasting memories.
                 </Text>
 

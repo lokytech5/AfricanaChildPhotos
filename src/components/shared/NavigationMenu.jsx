@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
+import logo from '../../assets/images/logo.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, login, setIsAuthenticated, loadUser } from '../../redux/userSlice';
+import { FiLogOut } from 'react-icons/fi';
 
 import {
   Avatar,
@@ -59,15 +61,6 @@ export default function NavigationMenu() {
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
 
-  //*Updating Avatar state
-  const renderAvatar = () => {
-    if (avatarUrl) {
-      return avatarUrl;
-    } else {
-      return null;
-    }
-  };
-
   useEffect(() => {
     const userRole = localStorage.getItem('userRole');
     if (userRole && username) {
@@ -91,23 +84,48 @@ export default function NavigationMenu() {
   const MenuItem = ({ to, children, onClick }) => (
     <LinkBox
       as="li"
-      marginRight={4}
-      marginLeft={4}
-      _hover={{ textDecoration: 'underline', color: 'blue.500' }}
+      marginRight={{ base: 2, md: 4 }}
+      marginLeft={{ base: 2, md: 4 }}
       onClick={onClick}
+      whiteSpace="nowrap"
     >
       {to ? (
-        <ChakraLink as={Link} to={to} display="flex" alignItems="center">
+        <ChakraLink as={Link}
+          to={to}
+          display="flex"
+          alignItems="center"
+          color={colorMode === "light" ? "blue.600" : "white"}
+          fontWeight="bold"
+          fontFamily="Playfair Display, serif"
+          textDecoration="none"
+          _hover={{
+            textDecoration: 'none'
+          }} >
           {children}
         </ChakraLink>
       ) : (
-        <Text display="flex" alignItems="center">{children}</Text>
+        <Text display="flex" alignItems="center" color={colorMode === "light" ? "blue.600" : "white"}
+
+          fontFamily="Playfair Display, serif"
+          textDecoration="none"
+        >{children}</Text>
       )}
     </LinkBox>
   );
 
   const MenuItems = ({ isMobile }) => (
-    <Box display={{ base: isMobile ? 'block' : 'none', md: 'block' }}>
+    <Box
+      display={{
+        base: isMobile ? 'block' : 'none',
+        md: 'block',
+        lg: 'flex',
+        xl: 'flex',
+      }}
+      maxWidth={{ base: 'calc(100% - 16px)', md: 'auto' }}
+      paddingX={{ base: 2, md: 0 }}
+      flexWrap="wrap"
+    >
+
       {isMobile ? (
         <VStack spacing={4} alignItems="start" as="ul" listStyleType="none">
           <MenuItem to="/">Home</MenuItem>
@@ -122,26 +140,27 @@ export default function NavigationMenu() {
           {isAuthenticated && userRole === 'user' && (
             <MenuItem to="/profile">
               <Flex alignItems="center">
-                {user ? (
-                  <Avatar
-                    key={user.avatar}
-                    size="sm"
-                    name={!user.avatar ? `${username}` : ''}
-                    src="https://bit.ly/dan-abramov"
-                  />
-                ) : (
-                  <Avatar size="sm" name={username ? `${username}` : ''} />
-                )}
-
-                <Text ml={2}>{username ? `Welcome` : ''}</Text>
+                <Avatar size="sm" name={username ? `${username}` : ''} />
+                <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Profile` : ''}</Text>
               </Flex>
             </MenuItem>
           )}
+
+
+          {isAuthenticated && userRole === 'admin' && (
+            <MenuItem to="/profile">
+              <Flex alignItems="center">
+                <Text>{username ? `Profile` : ''}</Text>
+                <Avatar size="sm" name={username ? `${username}` : ''} src="" />
+              </Flex>
+            </MenuItem>
+          )}
+
+
           {isAuthenticated && userRole === 'admin' && (
             <MenuItem to="/admin">
               <Flex alignItems="center">
-                <Avatar size="sm" name={username ? `${username}` : ''} src="" />
-                <Text ml={2}>{username ? `Welcome Admin` : ''}</Text>
+                <Text>{username ? `Welcome Admin` : ''}</Text>
               </Flex>
 
             </MenuItem>
@@ -149,12 +168,26 @@ export default function NavigationMenu() {
 
           <MenuItem to="/about">About Us</MenuItem>
           {isAuthenticated && (
-            <MenuItem onClick={handleLogout}>
+            <MenuItem
+              onClick={handleLogout}
+              p={4}
+              fontWeight="bold"
+              _hover={{
+                bg: 'gray.100',
+                color: 'blue.600',
+              }}
+              _active={{
+                bg: 'blue.600',
+                color: 'white',
+              }}
+            >
+              <Box as={FiLogOut} color="black" />
               Logout
             </MenuItem>
           )}
         </VStack>
-      ) : (<HStack spacing={4} alignItems="center" as="ul" listStyleType="none">
+      ) : (<HStack spacing={4} alignItems="center" as="ul" listStyleType="none" justifyContent="flex-end"
+        width="100%">
         <MenuItem to="/">Home</MenuItem>
         <MenuItem to="/gallery">Gallery</MenuItem>
         <MenuItem to="/about">About Us</MenuItem>
@@ -169,22 +202,17 @@ export default function NavigationMenu() {
         {isAuthenticated && userRole === 'user' && (
           <MenuItem to="/profile">
             <Flex alignItems="center">
-
-              {user ? (
-                <Avatar
-                  key={user.avatar}
-                  size="sm"
-                  name={!user.avatar ? `${username}` : ''}
-                  src="https://bit.ly/dan-abramov"
-                />
-
-              ) : (
-                <Avatar size="sm" name={username ? `${username}` : ''} />
-              )}
-
-              <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Welcome` : ''}</Text>
+              <Avatar size="sm" name={username ? `${username}` : ''} />
+              <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Profile` : ''}</Text>
             </Flex>
+          </MenuItem>
+        )}
 
+        {isAuthenticated && userRole === 'admin' && (
+          <MenuItem to="/profile">
+            <Flex alignItems="center">
+              <Text ml={2}>{username ? `Profile` : ''}</Text>
+            </Flex>
           </MenuItem>
         )}
 
@@ -199,7 +227,20 @@ export default function NavigationMenu() {
 
         <Spacer />
         {isAuthenticated && (
-          <MenuItem onClick={handleLogout}>
+          <MenuItem
+            onClick={handleLogout}
+            p={4}
+            fontWeight="bold"
+            _hover={{
+              bg: 'gray.100',
+              color: 'blue.600',
+            }}
+            _active={{
+              bg: 'blue.600',
+              color: 'white',
+            }}
+          >
+            <Box as={FiLogOut} color="black" />
             Logout
           </MenuItem>
         )}
@@ -212,9 +253,15 @@ export default function NavigationMenu() {
     <>
 
       <Box bg={colorMode === 'light' ? 'gray.100' : 'gray.900'} p={4}>
-        <Flex>
-          {/* Brand name and logo placeholder */}
-          <Text fontWeight="bold" fontSize="lg">
+        <Flex alignItems="center">
+          <Img src={logo} alt="Brand Logo" boxSize="40px" mr={2} />
+          <Text
+            fontWeight="bold"
+            fontSize="xl"
+            fontFamily="'Libre Bodoni', sans-serif"
+            letterSpacing="wider"
+            color={colorMode === "light" ? "blue.600" : "white"}
+          >
             AfricanaChild
           </Text>
 

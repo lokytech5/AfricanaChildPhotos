@@ -100,7 +100,7 @@ export default function LoginUserForm(props) {
             <Button type="submit" colorScheme="blue" mb={4} width="100%" isLoading={props.isLoading}>
               Login
             </Button>
-            <Link as={RouterLink} to="/register" color="#F2F2F2">
+            <Link as={RouterLink} to="/register" color="blue.500">
               Don't have an account? Register
             </Link>
           </form>

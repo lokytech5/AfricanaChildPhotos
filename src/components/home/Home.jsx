@@ -17,6 +17,7 @@ import {
     VStack,
     HStack,
     useBreakpointValue,
+    useColorMode,
 } from "@chakra-ui/react";
 
 const fadeIn = {
@@ -30,6 +31,7 @@ export default function Home() {
         dark: '#F2F2F2',
     }
     const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
+    const { colorMode, toggleColorMode } = useColorMode();
     return (
 
 
@@ -68,10 +70,15 @@ export default function Home() {
                             flexDirection="column"
                         >
                             <VStack spacing={8} alignItems="center" textAlign="center" mt={20}>
-                                <Heading as="h1" size="3xl" color="blue.700">
+                                <Heading as="h1"
+                                    size="3xl"
+                                    color={colorMode === "light" ? "blue.600" : "white"}
+                                    fontFamily="Playfair Display, serif" >
                                     Capture Your Moments with AfricanaChild
                                 </Heading>
-                                <Text fontSize={{ base: "md", md: "lg" }} color={color}>
+                                <Text fontSize={{ base: "md", md: "lg" }}
+                                    fontFamily="Lato, sans-serif"
+                                    color={color}>
                                     Discover the art of photography and find the perfect moments that capture your life's story. Join our
                                     community and explore the world through your lens.
                                 </Text>
@@ -88,7 +95,9 @@ export default function Home() {
                 </Box>
                 <motion.div variants={fadeIn} initial="initial" animate="animate">
                     <Box textAlign="center" py={8}>
-                        <Text fontSize={{ base: '2xl', md: '4xl' }} fontWeight="bold" color="blue.700">
+                        <Text fontSize={{ base: '2xl', md: '4xl' }} fontWeight="bold"
+                            fontFamily="Playfair Display, serif"
+                            color={colorMode === "light" ? "blue.600" : "white"}>
                             Our Featured Works
                         </Text>
                     </Box>

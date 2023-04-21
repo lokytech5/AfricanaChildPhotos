@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import Footer from '../shared/Footer';
+import Masonry from 'react-masonry-css';
 import { API_BASE_URL } from '../../config/config';
 import {
     Grid, GridItem, Modal,
@@ -10,17 +10,26 @@ import {
     ModalContent,
     useDisclosure,
     Text,
-    ModalCloseButton, Box, Image, useBreakpointValue, Spinner
+    ModalCloseButton, Box, Image, useBreakpointValue, Spinner, useColorMode
 } from '@chakra-ui/react';
+import './GalleryGird.css';
 
 
 export default function GalleryGird({ folder }) {
     const [images, setImages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
+    const { colorMode, toggleColorMode } = useColorMode();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedImage, setSelectedImage] = React.useState(null);
+
+    const breakpointColumnsObj = {
+        default: 4,
+        1200: 3,
+        992: 2,
+        768: 1,
+    };
 
     const handleImageClick = (src, alt) => {
         setSelectedImage({ src, alt });
@@ -46,7 +55,8 @@ export default function GalleryGird({ folder }) {
 
     return (
         <>
-            <Text fontSize="2xl" textAlign="center" fontWeight="bold" mb={4}>
+            <Text fontSize="2xl" color={colorMode === "light" ? "blue.600" : "white"}
+                fontFamily="Playfair Display, serif" textAlign="center" fontWeight="bold" mb={4}>
                 {folder} Images
             </Text>
             {isLoading ? (
@@ -61,7 +71,16 @@ export default function GalleryGird({ folder }) {
                     left="50%"
                     transform="translate(-50%, -50%)"
                 />
-            ) : (<Grid templateColumns={`repeat(${columns}, 1fr)`} gap={10} padding={10}>
+            ) : (<Masonry
+                breakpointCols={breakpointColumnsObj}
+                className="my-masonry-grid"
+                columnClassName="my-masonry-grid_column"
+                style={{
+                    padding: '10px',
+                    display: 'flex',
+                    width: '100%',
+                }}
+            >
                 {images.map((image, index) => (
                     <GridItem key={index} onClick={() => handleImageClick(image)}>
                         <Box
@@ -82,7 +101,7 @@ export default function GalleryGird({ folder }) {
                                 alt={folder}
                                 objectFit="cover"
                                 width="100%"
-                                height="200px"
+                                minH="200px"
                                 transition="transform 0.3s"
                                 _hover={{
                                     transform: 'scale(1.1)',
@@ -91,7 +110,7 @@ export default function GalleryGird({ folder }) {
                         </Box>
                     </GridItem>
                 ))}
-            </Grid>)}
+            </Masonry>)}
             {selectedImage && (
                 <Modal isOpen={isOpen} onClose={onClose} size="xl">
                     < ModalOverlay />

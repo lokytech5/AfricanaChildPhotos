@@ -11,6 +11,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  useBreakpointValue,
   Button,
   useToast,
   Heading,
@@ -28,6 +29,7 @@ import {
   ModalHeader,
   Grid,
   FormErrorMessage,
+  useMediaQuery,
   Tr,
   Td,
   Th,
@@ -75,6 +77,10 @@ export default function UserBookingDetails() {
   //*Toast from chakraUI
   const toast = useToast()
 
+  const fontSize = useBreakpointValue({ base: 'sm', md: 'sm' });
+  const padding = useBreakpointValue({ base: 1, md: 4 });
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   //*Initializing useForm here
   const { register,
     handleSubmit,
@@ -83,6 +89,14 @@ export default function UserBookingDetails() {
       resolver: zodResolver(formValidationSchema),
       defaultValues: updatedBooking,
     });
+
+  const getTodayDate = () => {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    const yyyy = today.getFullYear();
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
   //*Function for opening update Modal state.
   const openUpdateModal = (booking) => {
@@ -212,6 +226,57 @@ export default function UserBookingDetails() {
     }
   }
 
+  const renderCards = () => {
+
+    if (userBooking.length === 0) {
+      return (
+        <Text fontSize="xl" textAlign="center">
+          No bookings have been made yet.
+        </Text>
+      );
+    }
+    return userBooking.map((bookingItem) => (
+      <Box
+        key={bookingItem._id}
+        borderWidth={2}
+        borderRadius="lg"
+        padding={6}
+        margin={2}
+      >
+
+        <Stack>
+          <Text>Name: {bookingItem.name}</Text>
+          <Text>Email: {bookingItem.email}</Text>
+          <Text>Phone: {bookingItem.phoneNumber}</Text>
+          <Text>Service Type: {bookingItem.serviceType}</Text>
+          <Text>Date: {bookingItem.date}</Text>
+          <Text>Time: {bookingItem.time}</Text>
+          <Text>Address: {bookingItem.address}</Text>
+
+          <Text>Status: {bookingItem.status}</Text>
+
+          <Button
+            size={fontSize}
+            p={padding}
+            colorScheme="blue"
+            onClick={() => openUpdateModal(bookingItem)}>
+            Update
+          </Button>
+
+
+          <Button
+            size={fontSize}
+            p={padding}
+            colorScheme="red"
+            onClick={() => openDeleteModal(bookingItem._id)}
+          >
+            Delete
+          </Button>
+        </Stack>
+      </Box>
+    ));
+  };
+
   return (
     <>
       <Box mb={6}>
@@ -225,7 +290,7 @@ export default function UserBookingDetails() {
           <Box textAlign="center">
             <CircularProgress isIndeterminate color="blue.300" />
           </Box>
-        ) : (
+        ) : isMobile ? (<Box> {renderCards()}</Box>) : (
           <Table variant="simple" size="sm">
             <Thead>
               <Tr>
@@ -246,7 +311,7 @@ export default function UserBookingDetails() {
                 <Tr>
                   {/* Condition rendering if no booking have been made */}
                   <Td colSpan="10">
-                    <Text fontSize="xl" fontWeight="bold" textAlign="center">
+                    <Text fontSize="xl" textAlign="center">
                       No bookings have been made yet.
                     </Text>
                   </Td>
@@ -254,7 +319,7 @@ export default function UserBookingDetails() {
               ) : (
                 userBooking.map((bookingItem) => (
                   <Tr key={bookingItem._id}
-                    _hover={{ bg: 'black', cursor: 'pointer' }}>
+                    _hover={{ bg: 'blue.600', cursor: 'pointer' }}>
                     <Td>{bookingItem.name}</Td>
                     <Td>{bookingItem.email}</Td>
                     <Td>{bookingItem.phoneNumber}</Td>
@@ -387,6 +452,7 @@ export default function UserBookingDetails() {
                         type="date"
 
                         placeholder={updatedBooking.date}
+                        min={getTodayDate()}
                         onChange={(e) =>
                           setUpdatedBooking({ ...updatedBooking, date: e.target.value })
                         }

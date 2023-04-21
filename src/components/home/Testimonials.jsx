@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, VStack, SimpleGrid, Flex, Heading, Text, Avatar, HStack } from "@chakra-ui/react";
+import { Box, VStack, SimpleGrid, Flex, Heading, Text, Avatar, HStack, useColorMode } from "@chakra-ui/react";
 
 const testimonials = [
     {
@@ -36,6 +36,9 @@ export default function Testimonials() {
         dark: '#333333',
         dark: '#F2F2F2',
     }
+    const { colorMode, toggleColorMode } = useColorMode();
+
+
     return (
         <Box as="section" bg={bg} color={color} py={12} position="relative">
             <Box
@@ -51,7 +54,9 @@ export default function Testimonials() {
                 zIndex={-1}
             />
             <VStack align="center" spacing={4} mb={10}>
-                <Text fontSize="3xl" fontWeight="bold" color='#2C3E50'>
+                <Text fontSize="3xl" fontWeight="bold"
+                    fontFamily="Playfair Display, serif"
+                    color={colorMode === "light" ? "blue.600" : "white"}>
                     Testimonials
                 </Text>
                 <Text fontSize="lg" textAlign="center" maxW="2xl">
