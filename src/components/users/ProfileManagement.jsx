@@ -77,6 +77,7 @@ export default function ProfileManagement() {
             }
         };
         fetchProfile();
+        // eslint-disable-next-line
     }, [updateProfile])
 
     if (isLoading) {

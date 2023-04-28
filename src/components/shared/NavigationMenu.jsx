@@ -60,7 +60,7 @@ export default function NavigationMenu() {
     if (userRole && username) {
       dispatch(login({ role: userRole, username: username }));
     }
-  }, [dispatch]);
+  }, [dispatch, username]);
 
   const handleLogout = () => {
     // Clear token from localStorage

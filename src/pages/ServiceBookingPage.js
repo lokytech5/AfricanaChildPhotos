@@ -21,7 +21,7 @@ export default function ServiceBookingPage() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  // eslint-disable-next-line
   const [hasBooking, setHasBooking] = useState(false);
 
   const closeModal = () => {

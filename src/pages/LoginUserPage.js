@@ -91,6 +91,7 @@ export default function LoginUserPage() {
   return (
     <LoginUserForm
       onAddLogin={addLoginHandler}
-      isLoading={isLoading} />
+      isLoading={isLoading}
+      formData={formData} />
   )
 }
