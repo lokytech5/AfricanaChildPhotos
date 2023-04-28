@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link as RouterLink } from 'react-router-dom';
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
@@ -42,7 +42,6 @@ export default function RegisterUserForm(props) {
   );
 
   const formBg = useColorModeValue('white', 'gray.700');
-  const inputBg = useColorModeValue('white', 'gray.800');
 
   //*Validating Password
   const validatePassword = () => {

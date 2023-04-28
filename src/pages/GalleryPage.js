@@ -8,7 +8,7 @@ import GalleryThumbnails from '../components/gallery/GalleryThumbnails';
 export default function GalleryPage() {
 
     const [selectedFolder, setSelectedFolder] = useState(null);
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
     const handleFolderClick = (folder) => {
         setSelectedFolder(folder)

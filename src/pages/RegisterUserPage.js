@@ -6,8 +6,6 @@ import { API_BASE_URL } from '../config/config';
 
 import {
     useToast,
-    Flex,
-    VStack,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -16,8 +14,6 @@ import {
     ModalBody,
     ModalCloseButton,
     Button,
-    Spinner,
-    Center,
 }
     from '@chakra-ui/react';
 

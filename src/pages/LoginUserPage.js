@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import LoginUserForm from '../components/users/LoginUserForm'
 import { useNavigate } from 'react-router-dom';
-import { useToast, Text } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { API_BASE_URL } from '../config/config';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login, setIsAuthenticated } from '../redux/userSlice'
 
 export default function LoginUserPage() {

@@ -13,8 +13,6 @@ import {
     FormLabel,
     Input,
     Stack,
-    useToast,
-    useMediaQuery,
     Flex,
     Spinner,
     Modal,
@@ -28,7 +26,6 @@ import {
     Divider,
     Heading,
     VStack,
-    useColorModeValue,
     FormErrorMessage,
 } from '@chakra-ui/react';
 
@@ -43,26 +40,16 @@ export default function ProfileManagement() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [updateProfile, setUpdateProfile] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [isUpdating, setIsUpdating] = useState(false);
+    const [setIsUpdating] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [customError, setCustomError] = useState("");
     const [formData, setFormData] = useState({});
 
     const { register,
         handleSubmit,
-        formState: { errors }, getValues, setError, reset } = useForm({
+        formState: { errors }, getValues, reset } = useForm({
             resolver: zodResolver(formValidationSchema)
         });
-
-    const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
-    const bgGradient = useColorModeValue(
-        'linear(to-r, teal.300, teal.500)',
-        'linear(to-r, teal.600, teal.800)'
-    );
-
-    const formBg = useColorModeValue('white', 'gray.700');
-    const bg = useColorModeValue("gray.100", "gray.700");
-    const borderColor = useColorModeValue("gray.200", "gray.600");
 
     const token = localStorage.getItem('token');
 

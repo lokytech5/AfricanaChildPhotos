@@ -84,8 +84,7 @@ export default function UserBookingDetails() {
   //*Initializing useForm here
   const { register,
     handleSubmit,
-    formState: { errors, isValid },
-    reset } = useForm({
+    formState: { errors }, } = useForm({
       resolver: zodResolver(formValidationSchema),
       defaultValues: updatedBooking,
     });
@@ -203,7 +202,6 @@ export default function UserBookingDetails() {
 
       setUserBooking(userBooking.filter(request => request._id !== id));
       closeDeleteModal();
-      // setUserBooking((prevState) => !prevState)
       // Show success toast
       toast({
         title: 'Success!',

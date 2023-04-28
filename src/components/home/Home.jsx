@@ -29,10 +29,10 @@ export default function Home() {
     //*Final build
     const color = {
         dark: '#333333',
-        dark: '#F2F2F2',
+        darkColor: '#F2F2F2',
     }
     const buttonSize = useBreakpointValue({ base: "md", md: "lg" });
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
     return (
 
 

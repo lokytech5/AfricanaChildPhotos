@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSun } from 'react-icons/fi';
 import { FaMoon } from 'react-icons/fa';
 import logo from '../../assets/images/logo.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, login, setIsAuthenticated, loadUser } from '../../redux/userSlice';
+import { logout, login, setIsAuthenticated } from '../../redux/userSlice';
 import { FiLogOut } from 'react-icons/fi';
 
 import {
@@ -24,22 +24,15 @@ import {
   DrawerContent,
   DrawerCloseButton,
   Spinner,
-  Grid,
-  Button,
   VStack,
   HStack,
   LinkBox,
-  LinkOverlay,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Link as ChakraLink,
   Img,
 } from '@chakra-ui/react';
 
 
 export default function NavigationMenu() {
-  const [forceUpdate, setForceUpdate] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const [isOpen, setIsOpen] = React.useState(false);

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Image, AspectRatio } from "@chakra-ui/react";
+import { Box, Image, AspectRatio } from "@chakra-ui/react";
 
 import img15 from '../../assets/images/img15.jpg'
 import img2 from '../../assets/images/img2.jpg'

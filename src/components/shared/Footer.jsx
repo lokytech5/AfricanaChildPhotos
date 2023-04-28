@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, useTheme, VStack, Grid, HStack, Flex, Text, IconButton, Link, Spacer, useColorModeValue } from '@chakra-ui/react';
+import { Box, VStack, Grid, HStack, Flex, Text, IconButton, Link, Spacer, useColorModeValue } from '@chakra-ui/react';
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -32,8 +32,6 @@ export default function LoginUserForm(props) {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(formValidationSchema)
   });
-
-  const navigate = useNavigate();
 
   const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
   const bgGradient = useColorModeValue(

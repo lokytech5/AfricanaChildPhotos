@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, VStack, SimpleGrid, Flex, Heading, Text, Avatar, HStack, useColorMode } from "@chakra-ui/react";
+import { Box, VStack, SimpleGrid, Flex, Text, Avatar, useColorMode } from "@chakra-ui/react";
 
 const testimonials = [
     {
@@ -34,9 +34,9 @@ export default function Testimonials() {
 
     const color = {
         dark: '#333333',
-        dark: '#F2F2F2',
+        darkColor: '#F2F2F2',
     }
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
 
     return (

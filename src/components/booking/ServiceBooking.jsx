@@ -51,16 +51,15 @@ const getTodayDate = () => {
 export default function ServiceBooking(props) {
 
     const formBg = useColorModeValue('white', 'gray.700');
-    const { colorMode, toggleColorMode } = useColorMode();
-    const accentColor = ('#F39C12')
+    const { colorMode } = useColorMode();
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
-    const userRole = useSelector((state) => state.user.role);
+    
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
     const { register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: { errors },
         reset } = useForm({
             resolver: zodResolver(formValidationSchema)
         });
