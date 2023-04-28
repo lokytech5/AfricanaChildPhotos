@@ -63,7 +63,7 @@ export default function LoginUserForm(props) {
         flexDirection="column"
         bgGradient={bgGradient}
       >
-        <Heading mb={8} color="white">
+        <Heading mb={8} color="white" fontFamily="Playfair Display, serif">
           Login
         </Heading>
         <Box

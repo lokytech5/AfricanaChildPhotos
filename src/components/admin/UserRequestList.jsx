@@ -31,6 +31,7 @@ import {
 export default function UserRequestList() {
   const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userRequestIdToDelete, setUserRequestIdToDelete] = useState(null);
@@ -104,39 +105,72 @@ export default function UserRequestList() {
     }
   }
 
+  const renderCards = () => {
+    return userData.map((userItem) => (
+      <Box
+        key={userItem._id}
+        borderWidth={1}
+        borderRadius="lg"
+        padding={4}
+        margin={2}
+      >
+
+        <Stack>
+          <Text>ID: {userItem._id}</Text>
+          <Text>Username: {userItem.username}</Text>
+          <Text>Email: {userItem.email}</Text>
+
+          <Button
+            size={fontSize}
+            p={padding}
+            colorScheme="blue"
+            onClick={() => openDeleteModal(userItem._id)}
+          >
+            Delete
+          </Button>
+        </Stack>
+
+      </Box>
+    ));
+  }
+
   return (
     <>
-      <Box overflowX="auto">
-        <Table variant="simple" size={fontSize}>
-          <TableCaption placement="top">User Data</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>ID</Th>
-              <Th>Username</Th>
-              <Th>Email</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {userData.map((user) => (
-              <Tr key={user._id}>
-                <Td>{user._id}</Td>
-                <Td>{user.username}</Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  <Button
-                    size={fontSize}
-                    p={padding}
-                    colorScheme="blue"
-                    onClick={() => openDeleteModal(user._id)}
-                  >
-                    Delete
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+      <Box minH="100vh" display="flex" flexDirection="column">
+        {isMobile ? (<Box>{renderCards()}</Box>) : (
+          <Box overflowX="auto">
+            <Table variant="simple" size={fontSize}>
+              <TableCaption placement="top">User Data</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>ID</Th>
+                  <Th>Username</Th>
+                  <Th>Email</Th>
+                  <Th>Action</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {userData.map((user) => (
+                  <Tr key={user._id}>
+                    <Td>{user._id}</Td>
+                    <Td>{user.username}</Td>
+                    <Td>{user.email}</Td>
+                    <Td>
+                      <Button
+                        size={fontSize}
+                        p={padding}
+                        colorScheme="blue"
+                        onClick={() => openDeleteModal(user._id)}
+                      >
+                        Delete
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </Box>
+        )}
       </Box>
 
       <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal}>

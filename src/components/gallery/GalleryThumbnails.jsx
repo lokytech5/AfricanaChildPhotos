@@ -12,6 +12,7 @@ export default function GalleryThumbnails({ onFolderClick }) {
 
     const [thumbnails, setThumbnails] = useState({});
     const [isLoading, setIsLoading] = useState(true);
+    const [isOffline, setIsOffline] = useState(false);
     const { colorMode, toggleColorMode } = useColorMode();
 
     const columns = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4, xl: 5 });
@@ -20,7 +21,20 @@ export default function GalleryThumbnails({ onFolderClick }) {
 
 
     useEffect(() => {
+        const checkConnectivity = () => {
+            if (!window.navigator.onLine) {
+                setIsOffline(true);
+                return false;
+            }
+            setIsOffline(false);
+            return true;
+        };
+
         const fetchThumbnails = async () => {
+            if (!checkConnectivity()) {
+                return;
+            }
+
             try {
                 const response = await axios.get(`${API_BASE_URL}/images`);
                 setThumbnails(response.data.thumbnails);
@@ -36,6 +50,21 @@ export default function GalleryThumbnails({ onFolderClick }) {
 
     return (
         <>
+
+            {isOffline && (
+                <Box
+                    width="100%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    textAlign="center"
+                    py={8}
+                >
+                    <Heading as="h4" size="md" color={colorMode === 'light' ? 'blue.600' : 'white'}>
+                        No internet connection. Please check your connectivity and try again.
+                    </Heading>
+                </Box>
+            )}
 
             {isLoading ? (
                 <Spinner

@@ -69,7 +69,7 @@ export default function Home() {
                             padding={{ base: "2rem", md: "4rem" }}
                             flexDirection="column"
                         >
-                            <VStack spacing={8} alignItems="center" textAlign="center" mt={20}>
+                            <VStack spacing={8} alignItems="center" textAlign="center" mt={10}>
                                 <Heading as="h1"
                                     size="3xl"
                                     color={colorMode === "light" ? "blue.600" : "white"}
@@ -79,8 +79,7 @@ export default function Home() {
                                 <Text fontSize={{ base: "md", md: "lg" }}
                                     fontFamily="Lato, sans-serif"
                                     color={color}>
-                                    Discover the art of photography and find the perfect moments that capture your life's story. Join our
-                                    community and explore the world through your lens.
+                                    Discover the art of photography and find the perfect moments that capture your life's story.
                                 </Text>
                                 <HStack spacing={4}>
                                     <Link as={RouterLink} to='/gallery'>
@@ -94,7 +93,7 @@ export default function Home() {
                     </motion.div>
                 </Box>
                 <motion.div variants={fadeIn} initial="initial" animate="animate">
-                    <Box textAlign="center" py={8}>
+                    <Box textAlign="center" py={2} mt={4}>
                         <Text fontSize={{ base: '2xl', md: '4xl' }} fontWeight="bold"
                             fontFamily="Playfair Display, serif"
                             color={colorMode === "light" ? "blue.600" : "white"}>

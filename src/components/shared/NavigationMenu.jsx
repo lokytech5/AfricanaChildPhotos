@@ -55,6 +55,7 @@ export default function NavigationMenu() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const loading = useSelector((state) => state.user.isloading);
   const dispatch = useDispatch();
+  const accentColor = ('#F39C12')
 
 
 
@@ -94,7 +95,7 @@ export default function NavigationMenu() {
           to={to}
           display="flex"
           alignItems="center"
-          color={colorMode === "light" ? "blue.600" : "white"}
+          color={colorMode === "light" ? "blue.600" : accentColor}
           fontWeight="bold"
           fontFamily="Playfair Display, serif"
           textDecoration="none"
@@ -121,24 +122,23 @@ export default function NavigationMenu() {
         lg: 'flex',
         xl: 'flex',
       }}
-      maxWidth={{ base: 'calc(100% - 16px)', md: 'auto' }}
       paddingX={{ base: 2, md: 0 }}
       flexWrap="wrap"
     >
 
       {isMobile ? (
-        <VStack spacing={4} alignItems="start" as="ul" listStyleType="none">
-          <MenuItem to="/">Home</MenuItem>
-          <MenuItem to="/gallery">Gallery</MenuItem>
-          <MenuItem to="/service">Booking</MenuItem>
+        <VStack spacing={6} alignItems="start" as="ul" listStyleType="none">
+          <MenuItem to="/" onClick={closeDrawer}>Home</MenuItem>
+          <MenuItem to="/gallery" onClick={closeDrawer}>Gallery</MenuItem>
+          <MenuItem to="/service" onClick={closeDrawer}>Booking</MenuItem>
           {!isAuthenticated && (
             <>
-              <MenuItem to="/login">Login</MenuItem>
-              <MenuItem to="/register">Register</MenuItem>
+              <MenuItem to="/login" onClick={closeDrawer}>Login</MenuItem>
+              <MenuItem to="/register" onClick={closeDrawer}>Register</MenuItem>
             </>
           )}
           {isAuthenticated && userRole === 'user' && (
-            <MenuItem to="/profile">
+            <MenuItem to="/profile" onClick={closeDrawer}>
               <Flex alignItems="center">
                 <Avatar size="sm" name={username ? `${username}` : ''} />
                 <Text ml={2} bg={colorMode === 'light' ? 'gray.300' : 'gray.700'} >{username ? `Profile` : ''}</Text>
@@ -148,7 +148,7 @@ export default function NavigationMenu() {
 
 
           {isAuthenticated && userRole === 'admin' && (
-            <MenuItem to="/profile">
+            <MenuItem to="/profile" onClick={closeDrawer}>
               <Flex alignItems="center">
                 <Text>{username ? `Profile` : ''}</Text>
                 <Avatar size="sm" name={username ? `${username}` : ''} src="" />
@@ -158,7 +158,7 @@ export default function NavigationMenu() {
 
 
           {isAuthenticated && userRole === 'admin' && (
-            <MenuItem to="/admin">
+            <MenuItem to="/admin" onClick={closeDrawer}>
               <Flex alignItems="center">
                 <Text>{username ? `Welcome Admin` : ''}</Text>
               </Flex>
@@ -166,7 +166,7 @@ export default function NavigationMenu() {
             </MenuItem>
           )}
 
-          <MenuItem to="/about">About Us</MenuItem>
+          <MenuItem to="/about" onClick={closeDrawer}>About Us</MenuItem>
           {isAuthenticated && (
             <MenuItem
               onClick={handleLogout}
@@ -176,10 +176,8 @@ export default function NavigationMenu() {
                 bg: 'gray.100',
                 color: 'blue.600',
               }}
-              _active={{
-                bg: 'blue.600',
-                color: 'white',
-              }}
+
+              color={colorMode === "light" ? "blue.600" : accentColor}
             >
               <Box as={FiLogOut} color="black" />
               Logout
@@ -239,6 +237,7 @@ export default function NavigationMenu() {
               bg: 'blue.600',
               color: 'white',
             }}
+            color={colorMode === "light" ? "blue.600" : accentColor}
           >
             <Box as={FiLogOut} color="black" />
             Logout
@@ -252,26 +251,26 @@ export default function NavigationMenu() {
   return (
     <>
 
-      <Box bg={colorMode === 'light' ? 'gray.100' : 'gray.900'} p={4}>
+      <Box bg={colorMode === 'light' ? 'gray.100' : 'gray.900'} py={2} px={[2, 4, 6, 8]} maxWidth="100%">
         <Flex alignItems="center">
-          <Img src={logo} alt="Brand Logo" boxSize="40px" mr={2} />
+          <Img src={logo} alt="Brand Logo" boxSize="40px" mr={{ base: 1, md: 2 }} />
           <Text
             fontWeight="bold"
-            fontSize="xl"
+            fontSize={{ base: "lg", md: "xl" }}
             fontFamily="'Libre Bodoni', sans-serif"
             letterSpacing="wider"
-            color={colorMode === "light" ? "blue.600" : "white"}
+            color={colorMode === "light" ? "blue.600" : accentColor}
           >
-            AfricanaChild
+            AfricanaChildPhotos
           </Text>
 
           {/* Dark mode and light mode switch */}
           <IconButton
             aria-label="Toggle color mode"
             icon={colorMode === 'light' ? <FaMoon /> : <FiSun />}
-            ml={6}
+            ml={{ base: 2, md: 6 }}
             onClick={toggleColorMode}
-            mr={2} // Add marginRight here
+            mr={{ base: 1, md: 2 }} // Add marginRight here
           />
 
           <Spacer />
@@ -300,7 +299,7 @@ export default function NavigationMenu() {
                 <DrawerOverlay />
                 <DrawerContent>
                   <DrawerCloseButton />
-                  <DrawerHeader>Menu</DrawerHeader>
+                  <DrawerHeader> AfricanaChildPhotography</DrawerHeader>
                   <DrawerBody>
                     <VStack align="start" spacing={4}>
                       <MenuItems isMobile={true} />

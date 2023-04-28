@@ -26,7 +26,7 @@ export default function Footer() {
                 </VStack>
                 <VStack spacing={2} align="start">
                     <HStack spacing={4}>
-                        <Link href="https://www.facebook.com" isExternal>
+                        <Link href="https://www.facebook.com/africanachildphotography?mibextid=ZbWKwL" isExternal>
                             <IconButton
                                 icon={<FaFacebook />}
                                 aria-label="Facebook"
@@ -34,9 +34,10 @@ export default function Footer() {
                                 variant="ghost"
                                 colorScheme="facebook"
                                 color={primaryColor}
+
                             />
                         </Link>
-                        <Link href="https://www.instagram.com" isExternal>
+                        <Link href="https://instagram.com/africanachild_photography?igshid=ZDdkNTZiNTM=" isExternal>
                             <IconButton
                                 icon={<FaInstagram />}
                                 aria-label="Instagram"
@@ -45,7 +46,7 @@ export default function Footer() {
                                 color={primaryColor}
                             />
                         </Link>
-                        <Link href="https://api.whatsapp.com/send?phone=1234567890" isExternal>
+                        <Link href="https://api.whatsapp.com/send?phone=23408187329913" isExternal>
                             <IconButton
                                 icon={<FaWhatsapp />}
                                 aria-label="Whatsapp"

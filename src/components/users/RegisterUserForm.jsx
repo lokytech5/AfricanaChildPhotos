@@ -81,7 +81,7 @@ export default function RegisterUserForm(props) {
         flexDirection="column"
         bgGradient={bgGradient}
       >
-        <Heading mb={8} color="white">
+        <Heading mb={8} color="white" fontFamily="Playfair Display, serif">
           Register
         </Heading>
         <Box

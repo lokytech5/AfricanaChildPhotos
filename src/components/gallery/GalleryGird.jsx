@@ -96,7 +96,8 @@ export default function GalleryGird({ folder }) {
                                 boxShadow: '2xl',
                             }}
                         >
-                            <Image
+                            <LazyLoadImage
+                                effect="blur"
                                 src={image}
                                 alt={folder}
                                 objectFit="cover"

@@ -20,6 +20,7 @@ import {
     useColorModeValue,
     FormErrorMessage,
     Stack,
+    useColorMode,
     Grid,
     Select,
 } from '@chakra-ui/react';
@@ -50,6 +51,8 @@ const getTodayDate = () => {
 export default function ServiceBooking(props) {
 
     const formBg = useColorModeValue('white', 'gray.700');
+    const { colorMode, toggleColorMode } = useColorMode();
+    const accentColor = ('#F39C12')
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
     const userRole = useSelector((state) => state.user.role);
@@ -87,7 +90,7 @@ export default function ServiceBooking(props) {
             flexDirection="column"
             bgGradient="linear(to-r, blue.300, blue.500)"
         >
-            <Heading mb={8} color="white">
+            <Heading mb={8} color={colorMode === "light" ? "white" : "white"} fontFamily="Playfair Display, serif">
                 Service Booking
             </Heading>
 
