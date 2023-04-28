@@ -40,7 +40,8 @@ export default function ProfileManagement() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [updateProfile, setUpdateProfile] = useState();
     const [isLoading, setIsLoading] = useState(true);
-    const [setIsUpdating] = useState(false);
+    // eslint-disable-next-line
+    const [isUpdating, setIsUpdating] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [customError, setCustomError] = useState("");
     const [formData, setFormData] = useState({});

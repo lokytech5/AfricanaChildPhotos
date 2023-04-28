@@ -60,7 +60,8 @@ export default function NavigationMenu() {
     if (userRole && username) {
       dispatch(login({ role: userRole, username: username }));
     }
-  }, [dispatch, username]);
+    // eslint-disable-next-line
+  }, [dispatch]);
 
   const handleLogout = () => {
     // Clear token from localStorage

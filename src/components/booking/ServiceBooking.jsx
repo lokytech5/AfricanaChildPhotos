@@ -1,6 +1,7 @@
 import React from 'react'
 import { z } from 'zod';
 import { useForm } from 'react-hook-form'
+import { Link as RouterLink } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSelector } from 'react-redux';
 
@@ -54,7 +55,7 @@ export default function ServiceBooking(props) {
     const { colorMode } = useColorMode();
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)');
 
-    
+
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
     const { register,
@@ -174,11 +175,11 @@ export default function ServiceBooking(props) {
                 <Box mt={6} textAlign="center">
                     <Text fontSize="lg">
                         Please{' '}
-                        <Link color="orange" href="/login">
+                        <Link as={RouterLink} color="orange" to="/login">
                             log in
                         </Link>{' '}
                         or{' '}
-                        <Link color="orange" href="/register">
+                        <Link as={RouterLink} color="orange" to="/register">
                             register
                         </Link>{' '}
                         to book a service.
