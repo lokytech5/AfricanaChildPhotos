@@ -26,6 +26,7 @@ const fadeIn = {
 };
 
 export default function Home() {
+    //*Final build
     const color = {
         dark: '#333333',
         dark: '#F2F2F2',
