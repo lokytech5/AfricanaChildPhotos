@@ -4,15 +4,12 @@ import {
   Container,
   Heading,
   Text,
-  Flex,
   Image,
   VStack,
   HStack,
-  SimpleGrid,
   Button,
   Link,
   Icon,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { FaInstagram, FaFacebook, FaWhatsapp, FaLinkedin } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';

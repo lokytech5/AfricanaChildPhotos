@@ -7,7 +7,6 @@ import { FiUsers, FiList } from 'react-icons/fi';
 import {
     Box,
     Container,
-    Flex,
     Heading,
     Tab,
     TabList,
