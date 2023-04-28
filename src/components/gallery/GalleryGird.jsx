@@ -5,12 +5,12 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import Masonry from 'react-masonry-css';
 import { API_BASE_URL } from '../../config/config';
 import {
-    Grid, GridItem, Modal,
+    GridItem, Modal,
     ModalOverlay,
     ModalContent,
     useDisclosure,
     Text,
-    ModalCloseButton, Box, Image, useBreakpointValue, Spinner, useColorMode
+    ModalCloseButton, Box, Image, Spinner, useColorMode
 } from '@chakra-ui/react';
 import './GalleryGird.css';
 
@@ -18,8 +18,7 @@ import './GalleryGird.css';
 export default function GalleryGird({ folder }) {
     const [images, setImages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const columns = useBreakpointValue({ base: 1, sm: 2, md: 3 });
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedImage, setSelectedImage] = React.useState(null);

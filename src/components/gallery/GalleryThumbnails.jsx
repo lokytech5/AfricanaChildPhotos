@@ -13,7 +13,7 @@ export default function GalleryThumbnails({ onFolderClick }) {
     const [thumbnails, setThumbnails] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [isOffline, setIsOffline] = useState(false);
-    const { colorMode, toggleColorMode } = useColorMode();
+    const { colorMode } = useColorMode();
 
     const columns = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4, xl: 5 });
     const imageHeight = useBreakpointValue({ base: "300px", sm: "400px", md: "500px" });

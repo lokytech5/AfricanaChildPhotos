@@ -11,6 +11,7 @@ import { login, setIsAuthenticated } from '../redux/userSlice'
 
 export default function LoginUserPage() {
 
+  // eslint-disable-next-line
   const [formData, setFormData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
